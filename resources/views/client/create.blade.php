@@ -3,14 +3,16 @@
 @section('content')
 
 @include('include.topbar')
-@include('include.navbar')
 
 <title>New Client</title>
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-9 mx-auto">
-            <form action="#" method="post">
+        <div class="col-sm-2">
+            @include('include.navbar')
+        </div>
+        <div class="col-sm-10">
+            <form action="#" method="post" class="mt-5">
                 <div class="row">
                     <div class="col">
                         <div class="mt-3 mb-3">
