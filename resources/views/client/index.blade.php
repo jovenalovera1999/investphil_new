@@ -18,12 +18,14 @@
                 <div class="card-header">
                     <b>List of Clients</b>
                     <span>
-                        <a class="btn btn-primary btn-block btn-sm col-sm-2 float-end" href="#" id="new_client">
+                        <a class="btn btn-primary btn-block btn-sm col-sm-2 float-end" href="/client/create"
+                            id="new_client">
                             <i class="fa fa-plus"></i> New Client
                         </a>
                     </span>
                 </div>
                 <div class="card-body">
+                    @include('include.messages')
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-hover">
                             <div class=" mt-1 me-1 float-end">

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -14,10 +15,13 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard.admin_dashboard');
+Route::controller(AdminDashboardController::class)->group(function() {
+    Route::get('/', 'index');
 });
 
 Route::controller(UserController::class)->group(function() {
     Route::get('/clients', 'index');
+    Route::get('/client/create', 'create');
+    
+    Route::post('/store_client', 'storeClient');
 });

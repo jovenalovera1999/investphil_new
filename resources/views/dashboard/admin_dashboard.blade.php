@@ -70,7 +70,7 @@
                                             <i class="fa fa-home "></i>
                                         </span>
                                         <h4>
-                                            <b></b>
+                                            <b>{{ $totalHouse }}</b>
                                         </h4>
                                         <p>
                                             <b>Total Houses</b>
@@ -93,17 +93,17 @@
                                     <div class="card-body text-white">
                                         <span class="float-right summary_icon"> <i class="fa fa-user-friends "></i></span>
                                         <h4>
-                                            <b></b>
+                                            <b>{{ $totalUser }}</b>
                                         </h4>
                                         <p>
-                                            <b>Total User</b>
+                                            <b>Total Clients</b>
                                         </p>
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <a href="#" class="text-primary float-right">View List<span
+                                            <a href="/clients" class="text-primary float-right">View List<span
                                                     class="fa fa-angle-right"></span></a>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                                     <div class="card-body text-white">
                                         <span class="float-right summary_icon"> <i class="fa fa-file-invoice "></i></span>
                                         <h4>
-                                            <b></b>
+                                            <b>0</b>
                                         </h4>
                                         <p>
                                             <b>Payments This Month</b>
