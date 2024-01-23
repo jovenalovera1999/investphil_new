@@ -52,8 +52,8 @@
                                     <td>{{ $client->email }}</td>
                                     <td>{{ $client->contact_number }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-outline-primary">View</a>
-                                        <a href="#" class="btn btn-outline-warning">Edit</a>
+                                        <a href="/client/show/{{ $client->user_id }}" class="btn btn-outline-primary">View</a>
+                                        <a href="/client/edit/{{ $client->user_id }}" class="btn btn-outline-warning">Edit</a>
                                         <a href="#" class="btn btn-outline-danger">Delete</a>
                                     </td>
                                 </tr>

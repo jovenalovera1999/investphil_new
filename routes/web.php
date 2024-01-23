@@ -26,10 +26,14 @@ Route::group(['middleware' => 'auth'], function() {
     });
     
     Route::controller(UserController::class)->group(function() {
-        Route::get('/clients', 'index');
-        Route::get('/client/create', 'create');
+        Route::get('/clients', 'indexClient');
+        Route::get('/client/create', 'createClient');
+        Route::get('/client/show/{id}', 'showClient');
+        Route::get('/client/edit/{id}', 'editClient');
         
         Route::post('/store_client', 'storeClient');
         Route::post('/logout_user', 'logout');
+
+        Route::put('/update_client/{user}', 'updateClient');
     });
 });
