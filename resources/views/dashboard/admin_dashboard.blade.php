@@ -59,7 +59,11 @@
         <div class="col-sm-10">
             <div class="card mt-5">
                 <div class="card-body">
-                    <?php echo "Welcome  User Full Name!"  ?>
+                    @if (empty(auth()->user()->middle_name))
+                    {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                    @else
+                    {{ auth()->user()->first_name }} {{ auth()->user()->middle_name[0] . '.' }} {{ auth()->user()->last_name }}
+                    @endif
                     <hr>
                     <div class="row">
                         <div class="col-md-4 mb-3">

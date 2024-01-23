@@ -56,17 +56,17 @@
                     <div class="col">
                         <div class="mt-3 mb-3">
                             <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" name="email" />
+                            <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" />
                             @error('email') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
                         <div class="mb-3">
                             <label for="contact_number">Contact Number</label>
-                            <input type="text" class="form-control" id="contact_number" name="contact_number" />
+                            <input type="text" class="form-control" id="contact_number" name="contact_number" value="{{ old('contact_number') }}" />
                             @error('contact_number') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
                         <div class="mb-3">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" />
+                            <input type="text" class="form-control" id="username" name="username" value="{{ old('username') }}" />
                             @error('username') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
                         <div class="mb-3">
@@ -75,9 +75,9 @@
                             @error('password') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="confirm_password">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" />
-                            @error('confirm_password') <p class="text-danger fs-6">{{ $message }}</p> @enderror
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" />
+                            @error('password_confirmation') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
                     </div>
                 </div>

@@ -4,9 +4,7 @@
 
 <title>List of Clients</title>
 
-<div class="sticky-top">
-    @include('include.topbar')
-</div>
+@include('include.topbar')
 
 <div class="container">
     <div class="row">
@@ -14,7 +12,7 @@
             @include('include.navbar')
         </div>
         <div class="col-sm-10">
-            <div class="card mt-5">
+            <div class="card mt-3">
                 <div class="card-header">
                     <b>List of Clients</b>
                     <span>

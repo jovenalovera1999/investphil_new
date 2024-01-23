@@ -15,13 +15,21 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::controller(AdminDashboardController::class)->group(function() {
-    Route::get('/', 'index');
+Route::controller(UserController::class)->group(function() {
+    Route::get('/', [UserController::class, 'login'])->name('login');
+    Route::post('/process_login', 'processLogin');
 });
 
-Route::controller(UserController::class)->group(function() {
-    Route::get('/clients', 'index');
-    Route::get('/client/create', 'create');
+Route::group(['middleware' => 'auth'], function() {
+    Route::controller(AdminDashboardController::class)->group(function() {
+        Route::get('/dashboard', 'index');
+    });
     
-    Route::post('/store_client', 'storeClient');
+    Route::controller(UserController::class)->group(function() {
+        Route::get('/clients', 'index');
+        Route::get('/client/create', 'create');
+        
+        Route::post('/store_client', 'storeClient');
+        Route::post('/logout_user', 'logout');
+    });
 });
