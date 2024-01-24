@@ -13,8 +13,20 @@ class UserController extends Controller
         $clients = User::join('genders', 'genders.gender_id', '=', 'users.gender_id')
             ->join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
             ->where('role', 'Client')
-            ->orderBy('first_name', 'asc')->simplePaginate(8);
-        return view('client.index', ['clients' => $clients]);
+            ->orderBy('first_name', 'asc');
+
+        if(request()->has('search')) {
+            $searchTerm = request()->get('search');
+            $clients = $clients->where(function($query) use ($searchTerm) {
+                $query->where('first_name', 'like', "%$searchTerm%")
+                    ->orWhere('middle_name', 'like', "%$searchTerm%")
+                    ->orWhere('last_name', 'like', "%$searchTerm%")
+                    ->where('role', 'Client')
+                    ->orderBy('first_name', 'asc');
+            });
+        }
+
+        return view('client.index', ['clients' => $clients->simplePaginate(5)]);
     }
 
     public function createClient() {
@@ -39,7 +51,6 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $validated['user_role_id'] = 3;
 
-        // dd($validated);
         User::create($validated);
 
         return redirect('/clients')->with('message_success', 'Client successfully created!');
@@ -104,7 +115,12 @@ class UserController extends Controller
                 auth()->login($user);
                 session(['gender' => $user->gender, 'role' => $user->role]);
                 $request->session()->regenerate();
-                return redirect('/dashboard');
+
+                if(session('role') == 'Admin') {
+                    return redirect('/admin_dashboard');
+                } else {
+                    return redirect('/clients');
+                }
             }
         }
     }

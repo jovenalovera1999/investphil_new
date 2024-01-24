@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HouseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ Route::controller(UserController::class)->group(function() {
 
 Route::group(['middleware' => 'auth'], function() {
     Route::controller(AdminDashboardController::class)->group(function() {
-        Route::get('/dashboard', 'index');
+        Route::get('/admin_dashboard', 'index');
     });
     
     Route::controller(UserController::class)->group(function() {
@@ -35,5 +36,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/logout_user', 'logout');
 
         Route::put('/update_client/{user}', 'updateClient');
+    });
+
+    Route::controller(HouseController::class)->group(function() {
+        Route::get('/houses', 'index');
     });
 });

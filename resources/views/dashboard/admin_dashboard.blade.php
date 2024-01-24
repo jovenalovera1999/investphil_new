@@ -84,7 +84,7 @@
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <a href="#" class="text-primary float-right">View List<span
+                                            <a href="/houses" class="text-primary float-right">View List<span
                                                     class="fa fa-angle-right"></span></a>
                                         </div>
                                     </div>

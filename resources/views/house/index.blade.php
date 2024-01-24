@@ -23,6 +23,13 @@
         </div>
         <div class="col-sm-4">
             <form action="#" method="post" class="mt-5">
+                <div class="ms-1 me-1">
+                    <form action="/clients" method="get">
+                        <label for="search">Search</label>
+                        <input type="text" class="form-control" id="search" name="search" />
+                        <button class="btn btn-primary mt-2 mb-3">Search</button>
+                    </form>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         House Form
@@ -63,30 +70,30 @@
         </div>
         <div class="col-sm-5">
             <table class="table table-bordered table-hover mt-5">
+                <div class="float-end mt-3">
+                    {{ $houses->links() }}
+                </div>
                 <thead>
                     <tr>
-                        <th class="text-center">#</th>
                         <th class="text-center">House</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($houses as $house)    
                     <tr>
                         <td>
-                            {{-- <?=$house->house_id?> --}}
-                        </td>
-                        <td>
                             House No:
-                            {{-- <?=$house->house_no?> --}}
+                            <?=$house->house_no?>
                             <br><br>
                             House Type:
-                            {{-- <?=$house->category?> --}}
+                            <?=$house->category?>
                             <br><br>
                             Description:
-                            {{-- <?=$house->description?> --}}
+                            <?=$house->description?>
                             <br><br>
                             Price:
-                            {{-- <?=$house->price?> --}}
+                            <?=$house->price?>
                         </td>
                         <td>
                             <div class="btn-group" role="" group>
@@ -95,6 +102,7 @@
                             </div>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

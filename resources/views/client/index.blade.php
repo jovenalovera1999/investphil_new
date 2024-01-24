@@ -26,6 +26,13 @@
                     @include('include.messages')
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-hover">
+                            <div class="ms-1 me-1">
+                                <form action="/clients" method="get">
+                                    <label for="search">Search</label>
+                                    <input type="text" class="form-control" id="search" name="search" />
+                                    <button class="btn btn-primary mt-2">Search</button>
+                                </form>
+                            </div>
                             <div class=" mt-1 me-1 float-end">
                                 {{ $clients->links() }}
                             </div>
