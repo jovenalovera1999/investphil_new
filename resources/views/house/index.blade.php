@@ -16,6 +16,8 @@
     }
 </style>
 
+@include('include.messages')
+
 <div class="container">
     <div class="row">
         <div class="col-sm-2">
@@ -29,31 +31,45 @@
                     <button class="btn btn-primary mt-2 mb-3">Search</button>
                 </form>
             </div>
-            <form action="#" method="post">
+            <form action="/store_house" method="post">
+                @csrf
                 <div class="card">
                     <div class="card-header">
                         House Form
                     </div>
                     <div class="card-body">
-                        <div class="form-group" id="msg"></div>
-                        <input type="hidden" name="id">
-                        <div class="form-group">
+                        <div class="form-group mb-1">
                             <label class="control-label">House No</label>
-                            <input type="text" class="form-control" name="house_no" required="">
+                            <input type="text" class="form-control" name="house_no" value="{{ old('house_no') }}" />
+                            @error('house_no') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
-                        <div class="form-group">
-                            <label class="control-label">Category</label>
-                            <select name="category_id" id="" class="custom-select" required>
-                                <option selected>Please check the category list.</option>
+                        <div class="form-group mb-1">
+                            <label for="category_id" class="control-label">Category</label>
+                            <select name="category_id" id="category_id" class="form-select">
+                                <option value="" selected>Please check the category list.</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->category_id }}">{{ $category->category }}</option>
+                                @endforeach
+                                @if (old('category_id'))
+                                    @foreach ($categories as $category)
+                                        @if ($category->category_id == old('category_id'))
+                                            <option value="{{ $category->category_id }}" selected>$category->category</option>
+                                            @break
+                                        @endif
+                                    @endforeach
+                                @endif
                             </select>
+                            @error('category_id') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
-                        <div class="form-group">
-                            <label for="" class="control-label">Description</label>
-                            <textarea name="description" id="" cols="30" rows="4" class="form-control" required></textarea>
+                        <div class="form-group mb-1">
+                            <label for="description" class="control-label">Description</label>
+                            <textarea name="description" id="description" cols="30" rows="4" class="form-control">{{ old('description') }}</textarea>
+                            @error('description') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-1">
                             <label class="control-label">Price</label>
-                            <input type="number" class="form-control text-right" name="price" step="any" required="">
+                            <input type="text" class="form-control text-right" name="price" value="{{ old('price') }}" />
+                            @error('price') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
                     </div>
                     <div class="card-footer">
@@ -84,16 +100,16 @@
                     <tr>
                         <td>
                             House No:
-                            <?=$house->house_no?>
+                            {{ $house->house_no }}
                             <br><br>
                             House Type:
-                            <?=$house->category?>
+                            {{ $house->category }}
                             <br><br>
                             Description:
-                            <?=$house->description?>
+                            {{ $house->description }}
                             <br><br>
                             Price:
-                            <?=$house->price?>
+                            {{ $house->price }}
                         </td>
                         <td>
                             <div class="btn-group" role="" group>
@@ -108,71 +124,5 @@
         </div>
     </div>
 </div>
-
-{{-- <script>
-    $('#manage-house').on('reset',function(e){
-		$('#msg').html('')
-	})
-	$('#manage-house').submit(function(e){
-		e.preventDefault()
-		start_load()
-		$('#msg').html('')
-		$.ajax({
-			url:'ajax.php?action=save_house',
-			data: new FormData($(this)[0]),
-		    cache: false,
-		    contentType: false,
-		    processData: false,
-		    method: 'POST',
-		    type: 'POST',
-			success:function(resp){
-				if(resp==1){
-					alert_toast("Data successfully saved",'success')
-					setTimeout(function(){
-						location.reload()
-					},1500)
-
-				}
-				else if(resp==2){
-					$('#msg').html('<div class="alert alert-danger">House number already exist.</div>')
-					end_load()
-				}
-			}
-		})
-	})
-	$('.edit_house').click(function(){
-		start_load()
-		var cat = $('#manage-house')
-		cat.get(0).reset()
-		cat.find("[name='id']").val($(this).attr('data-id'))
-		cat.find("[name='house_no']").val($(this).attr('data-house_no'))
-		cat.find("[name='description']").val($(this).attr('data-description'))
-		cat.find("[name='price']").val($(this).attr('data-price'))
-		cat.find("[name='category_id']").val($(this).attr('data-category_id'))
-		end_load()
-	})
-
-	$('.delete_house').click(function(){
-		_conf("Are you sure to delete this house?","delete_house",[$(this).attr('data-id')])
-	})
-	function delete_house($id){
-		start_load()
-		$.ajax({
-			url:'ajax.php?action=delete_house',
-			method:'POST',
-			data:{id:$id},
-			success:function(resp){
-				if(resp==1){
-					alert_toast("Data successfully deleted",'success')
-					setTimeout(function(){
-						location.reload()
-					},1500)
-
-				}
-			}
-		})
-	}
-	$('table').dataTable()
-</script> --}}
 
 @endsection

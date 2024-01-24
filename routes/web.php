@@ -40,5 +40,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::controller(HouseController::class)->group(function() {
         Route::get('/houses', 'index');
+        Route::get('/house/edit/{id}', 'edit');
+
+        Route::post('/store_house', 'store');
     });
 });

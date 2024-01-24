@@ -51,6 +51,8 @@
 
 @include('include.topbar')
 
+@include('include.messages')
+
 <div class="container">
     <div class="row">
         <div class="col-sm-2">

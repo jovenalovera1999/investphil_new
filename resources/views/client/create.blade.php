@@ -40,14 +40,15 @@
                             <select class="form-select" aria-label="role" id="gender_id" name="gender_id">
                                 <option value="" selected>Select gender</option>
                                 @foreach ($genders as $gender)
-                                <option value="{{ $gender->gender_id }}">{{ $gender->gender }}</option>
+                                    <option value="{{ $gender->gender_id }}">{{ $gender->gender }}</option>
                                 @endforeach
                                 @if(old('gender_id'))
-                                @foreach ($genders as $gender)
-                                @if($gender->gender_id == old('gender_id'))
-                                <option value="{{ $gender->gender_id }}" selected hidden>{{ $gender->gender }}</option>
-                                @endif
-                                @endforeach
+                                    @foreach ($genders as $gender)
+                                        @if($gender->gender_id == old('gender_id'))
+                                            <option value="{{ $gender->gender_id }}" selected hidden>{{ $gender->gender }}</option>
+                                            @break
+                                        @endif
+                                    @endforeach
                                 @endif
                             </select>
                             @error('gender_id') <p class="text-danger fs-6">{{ $message }}</p> @enderror

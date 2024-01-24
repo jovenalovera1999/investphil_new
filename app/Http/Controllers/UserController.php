@@ -49,12 +49,15 @@ class UserController extends Controller
             'middle_name' => ['nullable'],
             'last_name' => ['required'],
             'age' => ['required', 'numeric'],
-            'gender_id' => ['required'],
+            'gender_id' => ['required', 'exists:genders,gender_id'],
             'email' => ['required', 'email'],
             'contact_number' => ['required', 'numeric'],
             'username' => ['required', Rule::unique('users', 'username')],
             'password' => ['required', 'confirmed'],
             'password_confirmation' => ['required']
+        ], [
+            'gender_id.required' => 'The gender field is required.',
+            'gender_id.exists' => 'The gender is invalid.'
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
@@ -62,7 +65,7 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect('/clients')->with('message_success', 'Client successfully created!');
+        return redirect('/clients')->with('message_success', 'Client successfully added!');
     }
 
     public function showClient($id) {
@@ -89,10 +92,13 @@ class UserController extends Controller
             'middle_name' => ['nullable'],
             'last_name' => ['required'],
             'age' => ['required', 'numeric'],
-            'gender_id' => ['required'],
+            'gender_id' => ['required', 'exists:genders,gender_id'],
             'email' => ['required', 'email'],
             'contact_number' => ['required'],
             'username' => ['required', Rule::unique('users')->ignore($user)]
+        ], [
+            'gender_id.required' => 'The gender field is required.',
+            'gender_id.exists' => 'The gender is invalid.'
         ]);
 
         $user->update($validated);
@@ -110,27 +116,28 @@ class UserController extends Controller
             'password' => ['required']
         ]);
 
-        // if(auth()->attempt($validated)) {
-        //     $request->session()->regenerate();
-        //     return redirect('/dashboard');
-        // }
-
         $user = User::join('genders', 'genders.gender_id', '=', 'users.gender_id')
             ->join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
-            ->where('username', $validated['username'])->first();
-        
-        if($user && $user->username == $validated['username']) {
-            if(auth()->attempt($validated)) {
-                auth()->login($user);
-                session(['gender' => $user->gender, 'role' => $user->role]);
-                $request->session()->regenerate();
+            ->where('username', $validated['username'])
+            ->first();
 
-                if(session('role') == 'Admin') {
-                    return redirect('/admin_dashboard');
+        if($user && auth()->attempt($validated)) {
+            auth()->login($user);
+
+            session(['gender' => $user->gender, 'role' => $user->role]);
+            $request->session()->regenerate();
+
+            if(session('role') == 'Admin') {
+                if(empty(auth()->user()->middle_name)) {
+                    return redirect('/admin_dashboard')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->last_name);
                 } else {
-                    return redirect('/clients');
+                    return redirect('/admin_dashboard')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->middle_name[0] . '. ' . auth()->user()->last_name);
                 }
+            } else {
+                return redirect('/clients');
             }
+        } else {
+            return back()->with('message_failed', 'Incorrect username or password.');
         }
     }
 
@@ -140,6 +147,6 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('message_success', 'Your account has been successfully logged out!');
+        return redirect('/')->with('message_success', 'Your account has been successfully logged out.');
     }
 }

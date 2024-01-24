@@ -42,9 +42,9 @@
                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarScrollingDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         @if (empty(auth()->user()->middle_name))
-                        {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+                            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                         @else
-                        {{ auth()->user()->first_name }} {{ auth()->user()->middle_name[0] . '.' }} {{ auth()->user()->last_name }}
+                            {{ auth()->user()->first_name }} {{ auth()->user()->middle_name[0] . '.' }} {{ auth()->user()->last_name }}
                         @endif
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
