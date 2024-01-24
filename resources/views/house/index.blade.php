@@ -22,14 +22,14 @@
             @include('include.navbar')
         </div>
         <div class="col-sm-4">
-            <form action="#" method="post" class="mt-5">
-                <div class="ms-1 me-1">
-                    <form action="/clients" method="get">
-                        <label for="search">Search</label>
-                        <input type="text" class="form-control" id="search" name="search" />
-                        <button class="btn btn-primary mt-2 mb-3">Search</button>
-                    </form>
-                </div>
+            <div class="mt-5 ms-1 me-1">
+                <form action="/houses" method="get">
+                    <label for="search">Search</label>
+                    <input type="text" class="form-control" id="search" name="search" value="{{ session('searchTerm', '') }}" />
+                    <button class="btn btn-primary mt-2 mb-3">Search</button>
+                </form>
+            </div>
+            <form action="#" method="post">
                 <div class="card">
                     <div class="card-header">
                         House Form
@@ -71,7 +71,7 @@
         <div class="col-sm-5">
             <table class="table table-bordered table-hover mt-5">
                 <div class="float-end mt-3">
-                    {{ $houses->links() }}
+                    {{ $houses->appends(['search' => session('searchTerm', '')])->links() }}
                 </div>
                 <thead>
                     <tr>

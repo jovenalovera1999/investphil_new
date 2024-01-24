@@ -29,12 +29,12 @@
                             <div class="ms-1 me-1">
                                 <form action="/clients" method="get">
                                     <label for="search">Search</label>
-                                    <input type="text" class="form-control" id="search" name="search" />
+                                    <input type="text" class="form-control" id="search" name="search" value="{{ session('searchTerm', '') }}" />
                                     <button class="btn btn-primary mt-2">Search</button>
                                 </form>
                             </div>
                             <div class=" mt-1 me-1 float-end">
-                                {{ $clients->links() }}
+                                {{ $clients->appends(['search' => session('searchTerm', '')])->links() }}
                             </div>
                             <thead>
                                 <tr>

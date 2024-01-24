@@ -17,21 +17,30 @@ class UserController extends Controller
 
         if(request()->has('search')) {
             $searchTerm = request()->get('search');
-            $clients = $clients->where(function($query) use ($searchTerm) {
-                $query->where('first_name', 'like', "%$searchTerm%")
-                    ->orWhere('middle_name', 'like', "%$searchTerm%")
-                    ->orWhere('last_name', 'like', "%$searchTerm%")
-                    ->where('role', 'Client')
-                    ->orderBy('first_name', 'asc');
-            });
+
+            if($searchTerm) {
+                $clients = $clients->where(function($query) use ($searchTerm) {
+                    $query->where('first_name', 'like', "%$searchTerm%")
+                        ->orWhere('middle_name', 'like', "%$searchTerm%")
+                        ->orWhere('last_name', 'like', "%$searchTerm%")
+                        ->where('role', 'Client')
+                        ->orderBy('first_name', 'asc');
+
+                        session(['searchTerm' => $searchTerm]);
+                });
+            } else {
+                session()->forget('searchTerm');
+            }
         }
 
-        return view('client.index', ['clients' => $clients->simplePaginate(5)]);
+        $clients = $clients->simplePaginate(5);
+
+        return view('client.index', compact('clients'));
     }
 
     public function createClient() {
         $genders = Gender::all();
-        return view('client.create', ['genders' => $genders]);
+        return view('client.create', compact('genders'));
     }
 
     public function storeClient(Request $request) {
@@ -61,7 +70,7 @@ class UserController extends Controller
             ->join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
             ->find($id);
 
-        return view('client.show', ['client' => $client]);
+        return view('client.show', compact('client'));
     }
 
     public function editClient($id) {
@@ -71,7 +80,7 @@ class UserController extends Controller
             ->join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
             ->find($id);
 
-        return view('client.edit', ['genders' => $genders, 'client' => $client]);
+        return view('client.edit', compact('genders', 'client'));
     }
 
     public function updateClient(Request $request, User $user) {

@@ -13,6 +13,6 @@ class AdminDashboardController extends Controller
         $totalHouse = House::all()->count();
         $totalUser = User::where('user_role_id', 3)->count();
 
-        return view('dashboard.admin_dashboard', ['totalHouse' => $totalHouse, 'totalUser' => $totalUser]);
+        return view('dashboard.admin_dashboard', compact('totalHouse', 'totalUser'));
     }
 }
