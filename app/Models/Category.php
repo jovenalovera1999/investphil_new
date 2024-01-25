@@ -11,5 +11,8 @@ class Category extends Model
 
     protected $table = 'categories';
     protected $primaryKey = 'category_id';
-    protected $guarded = [];
+    protected $fillable = [
+        'category',
+        'is_deleted'
+    ];
 }

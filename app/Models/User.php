@@ -30,7 +30,8 @@ class User extends Authenticatable
         'contact_number',
         'username',
         'password',
-        'user_role_id'
+        'user_role_id',
+        'is_delete'
     ];
     protected $hidden = ['password'];
 }

@@ -10,11 +10,13 @@ use App\Models\Category;
 class HouseController extends Controller
 {
     public function index() {
-        $categories = Category::all();
+        $categories = Category::orderBy('category',  'asc')
+            ->get();
 
         $houses = House::join('categories', 'categories.category_id', '=', 'houses.category_id')
             ->select('houses.*', 'categories.category', DB::raw('FORMAT(houses.price, 2) as price'))
-            ->orderBy('price', 'desc');
+            ->where('houses.is_deleted', 0)
+            ->orderBy('price', 'asc');
 
         if(request()->has('search')) {
             $searchTerm = request()->get('search');
@@ -25,12 +27,13 @@ class HouseController extends Controller
                         ->orWhere('category', 'like', "%$searchTerm%")
                         ->orWhere('description', 'like', "%$searchTerm%")
                         ->orWhere('price', 'like', "%$searchTerm%")
-                        ->orderBy('price', 'desc');
+                        ->where('houses.is_deleted', 0)
+                        ->orderBy('price', 'asc');
                         
-                        session(['searchTerm' => $searchTerm]);
+                        session(['searchTermHouse' => $searchTerm]);
                 });
             } else {
-                session()->forget('searchTerm');
+                session()->forget('searchTermHouse');
             }
         }
 
@@ -52,13 +55,34 @@ class HouseController extends Controller
 
         House::create($validated);
 
-        return back()->with('message_success', 'House successfully added!');
+        return back()->with('message_success', 'House successfully added.');
     }
 
     public function edit($id) {
+        $categories = Category::orderBy('category', 'asc')
+            ->get();
+
         $house = House::join('categories', 'categories.category_id', '=', 'houses.category_id')
             ->find($id);
         
-        return view('house.edit', compact('house'));
+        return view('house.edit', compact('house', 'categories'));
+    }
+
+    public function update(Request $request, House $house) {
+        $validated = $request->validate([
+            'house_no' => ['required', 'numeric'],
+            'category_id' => ['required', 'exists:categories,category_id'],
+            'description' => ['required'],
+            'price' => ['required', 'numeric']
+        ], [
+            'category_id.required' => 'The category field is required.',
+            'category_id.exists' => 'The category is invalid.'
+        ]);
+
+        // dd($validated);
+
+        $house->update($validated);
+
+        return back()->with('message_success', 'House successfully updated.');
     }
 }

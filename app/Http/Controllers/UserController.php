@@ -13,6 +13,7 @@ class UserController extends Controller
         $clients = User::join('genders', 'genders.gender_id', '=', 'users.gender_id')
             ->join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
             ->where('role', 'Client')
+            ->where('is_delete', 0)
             ->orderBy('first_name', 'asc');
 
         if(request()->has('search')) {
@@ -24,12 +25,13 @@ class UserController extends Controller
                         ->orWhere('middle_name', 'like', "%$searchTerm%")
                         ->orWhere('last_name', 'like', "%$searchTerm%")
                         ->where('role', 'Client')
+                        ->where('is_delete', 0)
                         ->orderBy('first_name', 'asc');
 
-                        session(['searchTerm' => $searchTerm]);
+                        session(['searchTermClient' => $searchTerm]);
                 });
             } else {
-                session()->forget('searchTerm');
+                session()->forget('searchTermClient');
             }
         }
 
@@ -104,6 +106,11 @@ class UserController extends Controller
         $user->update($validated);
 
         return back()->with('message_success', 'Client successfully updated!');
+    }
+
+    public function destroyClient(User $user) {
+        $user->update(['is_delete' => 1]);
+        return back()->with('message_success', 'User successfully deleted.');
     }
 
     public function login() {

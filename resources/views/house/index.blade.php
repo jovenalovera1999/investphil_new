@@ -2,6 +2,8 @@
 
 @section('content')
 
+<title>PHILINVEST | List of Houses</title>
+
 @include('include.topbar')
 
 <style>
@@ -27,8 +29,8 @@
             <div class="mt-5 ms-1 me-1">
                 <form action="/houses" method="get">
                     <label for="search">Search</label>
-                    <input type="text" class="form-control" id="search" name="search" value="{{ session('searchTerm', '') }}" />
-                    <button class="btn btn-primary mt-2 mb-3">Search</button>
+                    <input type="text" class="form-control" id="search" name="search" value="{{ session('searchTermHouse', '') }}" />
+                    <button class="btn btn-primary mt-2 mb-2">Search</button>
                 </form>
             </div>
             <form action="/store_house" method="post">
@@ -87,7 +89,7 @@
         <div class="col-sm-5">
             <table class="table table-bordered table-hover mt-5">
                 <div class="float-end mt-3">
-                    {{ $houses->appends(['search' => session('searchTerm', '')])->links() }}
+                    {{ $houses->appends(['search' => session('searchTermHouse', '')])->links() }}
                 </div>
                 <thead>
                     <tr>
@@ -113,7 +115,7 @@
                         </td>
                         <td>
                             <div class="btn-group" role="" group>
-                                <a href="#" class="btn btn-outline-warning">Edit</a>
+                                <a href="/house/edit/{{ $house->house_id }}" class="btn btn-outline-warning">Edit</a>
                                 <a href="#" class="btn btn-outline-danger">Delete</a>
                             </div>
                         </td>

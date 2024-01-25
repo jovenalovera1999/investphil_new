@@ -2,7 +2,7 @@
 
 @section('content')
 
-<title>View Client</title>
+<title>PHILINVEST | View Client</title>
 
 @include('include.topbar')
 

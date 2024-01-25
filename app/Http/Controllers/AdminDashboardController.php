@@ -10,8 +10,13 @@ use App\Models\Payment;
 class AdminDashboardController extends Controller
 {
     public function index() {
-        $totalHouse = House::all()->count();
-        $totalUser = User::where('user_role_id', 3)->count();
+        $totalHouse = House::where('is_deleted', 0)
+            ->count();
+
+        $totalUser = User::join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
+            ->where('role', 'Admin')
+            ->where('is_delete', 0)
+            ->count();
 
         return view('dashboard.admin_dashboard', compact('totalHouse', 'totalUser'));
     }

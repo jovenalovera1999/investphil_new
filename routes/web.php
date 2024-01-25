@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HouseController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/logout_user', 'logout');
 
         Route::put('/update_client/{user}', 'updateClient');
+        Route::put('/destroy_client/{user}', 'destroyClient');
     });
 
     Route::controller(HouseController::class)->group(function() {
@@ -43,5 +45,16 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/house/edit/{id}', 'edit');
 
         Route::post('/store_house', 'store');
+
+        Route::put('/update_house/{house}', 'update');
+    });
+
+    Route::controller(CategoryController::class)->group(function() {
+        Route::get('/categories', 'index');
+        Route::get('/category/edit/{id}', 'edit');
+
+        Route::post('/store_category', 'store');
+
+        Route::put('/update_category/{category}', 'update');
     });
 });

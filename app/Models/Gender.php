@@ -11,5 +11,7 @@ class Gender extends Model
 
     protected $table = 'genders';
     protected $primaryKey = 'gender_id';
-    protected $guarded = [];
+    protected $fillable = [
+        'gender'
+    ];
 }

@@ -14,7 +14,7 @@
         @if (session('role') == 'Admin')
             <a href="/admin_dashboard" class="nav-item nav-home"><span class='icon-field'><i
                         class="fa fa-tachometer-alt "></i></span> Dashboard</a>
-            <a href="#" class="nav-item nav-categories"><span class='icon-field'><i
+            <a href="/categories" class="nav-item nav-categories"><span class='icon-field'><i
                         class="fa fa-th-list "></i></span> House Type</a>
             <a href="/houses" class="nav-item nav-houses"><span class='icon-field'><i class="fa fa-home "></i></span>
                 House Module</a>

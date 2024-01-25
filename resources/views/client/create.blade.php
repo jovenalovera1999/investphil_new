@@ -4,7 +4,7 @@
 
 @include('include.topbar')
 
-<title>New Client</title>
+<title>PHILINVEST | Create New Client</title>
 
 <div class="container">
     <div class="row">

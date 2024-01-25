@@ -11,5 +11,9 @@ class ClientHouse extends Model
 
     protected $table = 'client_houses';
     protected $primaryKey = 'client_house_id';
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'house_id',
+        'is_deleted'
+    ];
 }

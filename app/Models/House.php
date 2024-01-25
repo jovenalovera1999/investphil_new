@@ -11,5 +11,11 @@ class House extends Model
 
     protected $table = 'houses';
     protected $primaryKey = 'house_id';
-    protected $guarded = [];
+    protected $fillable = [
+        'house_no',
+        'category_id',
+        'description',
+        'price',
+        'is_deleted'
+    ];
 }

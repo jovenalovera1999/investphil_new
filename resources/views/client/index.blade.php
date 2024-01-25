@@ -2,7 +2,7 @@
 
 @section('content')
 
-<title>List of Clients</title>
+<title>PHILINVEST | List of Clients</title>
 
 @include('include.topbar')
 
@@ -29,12 +29,12 @@
                             <div class="ms-1 me-1">
                                 <form action="/clients" method="get">
                                     <label for="search">Search</label>
-                                    <input type="text" class="form-control" id="search" name="search" value="{{ session('searchTerm', '') }}" />
-                                    <button class="btn btn-primary mt-2">Search</button>
+                                    <input type="text" class="form-control" id="search" name="search" value="{{ session('searchTermClient', '') }}" />
+                                    <button class="btn btn-primary mt-2 mb-2">Search</button>
                                 </form>
                             </div>
-                            <div class=" mt-1 me-1 float-end">
-                                {{ $clients->appends(['search' => session('searchTerm', '')])->links() }}
+                            <div class="mt-1 me-1 float-end">
+                                {{ $clients->appends(['search' => session('searchTermClient', '')])->links() }}
                             </div>
                             <thead>
                                 <tr>
@@ -61,7 +61,13 @@
                                     <td>
                                         <a href="/client/show/{{ $client->user_id }}" class="btn btn-outline-primary">View</a>
                                         <a href="/client/edit/{{ $client->user_id }}" class="btn btn-outline-warning">Edit</a>
-                                        <a href="#" class="btn btn-outline-danger">Delete</a>
+                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                            <form action="/destroy_client/{{ $client->user_id }}" method="post">
+                                                @method('PUT')
+                                                @csrf
+                                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

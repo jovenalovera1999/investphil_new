@@ -2,6 +2,8 @@
 
 @section('content')
 
+<title>PHILINVEST | Admin Dashboard</title>
+
 <style>
     span.float-right.summary_icon {
         font-size: 3rem;

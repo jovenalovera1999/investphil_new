@@ -4,7 +4,7 @@
 
 @include('include.topbar')
 
-<title>Edit Client</title>
+<title>PHILINVEST | Edit Client</title>
 
 @include('include.messages')
 
