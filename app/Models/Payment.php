@@ -12,11 +12,12 @@ class Payment extends Model
     protected $table = 'payments';
     protected $primaryKey = 'payment_id';
     protected $fillable = [
+        'payment_method_id',
         'invoices',
-        'user_id',
-        'house_id',
-        'amount',
-        'change',
+        'client_house_id',
+        'downpayment_id',
+        'monthly_paid',
+        'is_fully_paid',
         'is_deleted'
     ];
 }

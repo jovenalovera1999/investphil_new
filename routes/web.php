@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\CategoryController;
@@ -23,8 +23,9 @@ Route::controller(UserController::class)->group(function() {
 });
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::controller(AdminDashboardController::class)->group(function() {
-        Route::get('/admin_dashboard', 'index');
+    Route::controller(DashboardController::class)->group(function() {
+        Route::get('/dashboard/admin', 'indexAdmin');
+        Route::get('/dashboard/client', 'indexClient');
     });
     
     Route::controller(UserController::class)->group(function() {

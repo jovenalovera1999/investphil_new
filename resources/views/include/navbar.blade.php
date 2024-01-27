@@ -12,8 +12,8 @@
                 alt="Logo">
         </div>
         @if (session('role') == 'Admin')
-            <a href="/admin_dashboard" class="nav-item nav-home"><span class='icon-field'><i
-                        class="fa fa-tachometer-alt "></i></span> Dashboard</a>
+            <a href="/dashboard/admin" class="nav-item nav-home"><span class='icon-field'><i
+                        class="fa fa-tachometer-alt"></i></span> Dashboard</a>
             <a href="/categories" class="nav-item nav-categories"><span class='icon-field'><i
                         class="fa fa-th-list "></i></span> House Type</a>
             <a href="/houses" class="nav-item nav-houses"><span class='icon-field'><i class="fa fa-home "></i></span>
@@ -29,7 +29,9 @@
             <a href="#" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-bell "></i></span> Notification
                 Module</a>
         @else
-            <a href="#" class="nav-item nav-invoices"><span class='icon-field'><i class="fa fa-file-invoice "></i></span> Payment Module</a>
+            <a href="/dashboard/client" class="nav-item nav-home"><span class='icon-field'><i
+                        class="fa fa-tachometer-alt"></i></span> Dashboard</a>
+            <a href="#" class="nav-item nav-invoices"><span class='icon-field'><i class="fa fa-file-invoice"></i></span> Payment Module</a>
         @endif
     </div>
 

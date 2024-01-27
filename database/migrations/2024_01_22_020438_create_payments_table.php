@@ -13,23 +13,30 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('payment_id');
+            $table->unsignedBigInteger('payment_method_id');
             $table->string('invoices', 55);
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('house_id');
-            $table->double('amount');
-            $table->double('change')->default(0);
+            $table->unsignedBigInteger('client_house_id');
+            $table->unsignedBigInteger('downpayment_id');
+            $table->double('monthly_paid')->default(0);
+            $table->tinyInteger('is_fully_paid')->default(0);
             $table->tinyInteger('is_deleted')->default(0);
             $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('user_id')
-                ->on('users')
+            $table->foreign('payment_method_id')
+                ->references('payment_method_id')
+                ->on('payment_methods')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+                
+            $table->foreign('client_house_id')
+                ->references('client_house_id')
+                ->on('client_houses')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('house_id')
-                ->references('house_id')
-                ->on('houses')
+            $table->foreign('downpayment_id')
+                ->references('downpayment_id')
+                ->on('downpayments')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

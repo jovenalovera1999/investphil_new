@@ -136,12 +136,16 @@ class UserController extends Controller
 
             if(session('role') == 'Admin') {
                 if(empty(auth()->user()->middle_name)) {
-                    return redirect('/admin_dashboard')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->last_name);
+                    return redirect('/dashboard/admin')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->last_name);
                 } else {
-                    return redirect('/admin_dashboard')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->middle_name[0] . '. ' . auth()->user()->last_name);
+                    return redirect('/dashboard/admin')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->middle_name[0] . '. ' . auth()->user()->last_name);
                 }
             } else {
-                return redirect('/clients');
+                if(empty(auth()->user()->middle_name)) {
+                    return redirect('/dashboard/client')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->last_name);
+                } else {
+                    return redirect('/dashboard/client')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->middle_name[0] . '. ' . auth()->user()->last_name);
+                }
             }
         } else {
             return back()->with('message_failed', 'Incorrect username or password.');
