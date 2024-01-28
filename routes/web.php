@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::controller(DashboardController::class)->group(function() {
         Route::get('/dashboard/admin', 'indexAdmin');
         Route::get('/dashboard/client', 'indexClient');
+        Route::get('/dashboard/client/monthly_payment/{id}', 'viewMonthlyPayment');
     });
     
     Route::controller(UserController::class)->group(function() {

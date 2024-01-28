@@ -1,5 +1,5 @@
 @php
-    use App\Models\Payment;
+use App\Models\Payment;
 @endphp
 
 @extends('layout.main')
@@ -65,31 +65,30 @@
             @include('include.navbar')
         </div>
         <div class="col-sm-7">
-            <h2 class="mt-5">House Owned</h2>
+            <h2 class="mt-5">Monthly Payment Made</h2>
             <div class="table-responsive">
                 <table class="table">
                     <div class="float-end mt-1 me-1">
-                        {{ $payments->links() }}
+                        {{-- {{ $payments->links() }} --}}
                     </div>
                     <thead>
-                        <th class="text-center">House No.</th>
-                        <th class="text-center">House Model</th>
-                        <th class="text-center">Total Assessment</th>
-                        <th class="text-center">Downpayment</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center">Invoices</th>
+                        <th class="text-center">Monthly Paid</th>
+                        <th class="text-center">Date Transacted</th>
                     </thead>
                     <tbody>
-                        @foreach ($payments as $payment)
+                        @foreach ($monthlyPayments as $monthlyPayment)
                             <tr>
-                                <td>{{ $payment->house_no }}</td>
-                                <td>{{ $payment->category }}</td>
-                                <td>{{ $payment->price }}</td>
-                                <td>{{ $payment->downpayment }}</td>
-                                <td><a href="/dashboard/client/monthly_payment/{{ $payment->house_id }}" class="btn btn-outline-primary">View Monthly Paid</a></td>
+                                <td>{{ $monthlyPayment->invoices }}</td>
+                                <td>{{ $monthlyPayment->monthly_paid }}</td>
+                                <td>{{ $monthlyPayment->created_at }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                <strong class="mt-3">Total Assessment:</strong> <p>{{ $downpayment->first()->price }}</p>
+                <strong class="mt-3">Downpayment:</strong> <p>{{ $downpayment->first()->downpayment }}</p>
+                <strong class="mt-3">Total Payment Made:</strong> {{ $totalPaymentMade }}
             </div>
         </div>
     </div>
