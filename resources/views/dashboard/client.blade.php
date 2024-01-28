@@ -64,7 +64,7 @@
             <h2 class="mt-5">House Owned</h2>
             <table class="table">
                 <tbody>
-                    @foreach ($payments as $payment)
+                    @foreach ($paymentInfos as $paymentInfo)
                         <tr>
                             <td>
                                 <div class="row">
@@ -72,41 +72,44 @@
                                         <div class="card-body">
                                             <div class="card-text">
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-5">
                                                         <div class="mb-3">
-                                                            <strong>House No.:</strong> {{ $payment->house_no }}
+                                                            <strong>House No.:</strong> {{ $paymentInfo->house_no }}
                                                         </div>
                                                         <div class="mb-3">
-                                                            <strong>House Model:</strong> {{ $payment->category }}
+                                                            <strong>House Model:</strong> {{ $paymentInfo->category }}
                                                         </div>
                                                         <div class="mb-3">
-                                                            <strong>Total Assessment:</strong> {{ $payment->price }}
+                                                            <strong>Total Assessment:</strong> {{ $paymentInfo->price }}
                                                         </div>
                                                         <div class="mb-3">
-                                                            <strong>Downpayment:</strong> {{ $payment->downpayment }}
+                                                            <strong>Downpayment:</strong> {{ $paymentInfo->downpayment }}
                                                         </div>
-                                                        {{-- <div class="mb-3">
+                                                        <div class="mb-3">
                                                             <strong>Total Payment Made:</strong> {{ $totalPaymentMade }}
-                                                        </div> --}}
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         {{-- <div class="btn-group mt-5 ms-5" role="group" aria-label="Basic example">
                                                             <a href="#" class="btn btn-outline-primary">View</a>
                                                             <a href="#" class="btn btn-outline-warning">Edit</a>
                                                             <a href="#" class="btn btn-outline-danger">Delete</a>
                                                         </div> --}}
                                                         <table class="table">
+                                                            {{ $payments->links() }}
                                                             <thead>
+                                                                <th>Invoices</th>
                                                                 <th>Monthly Paid</th>
                                                                 <th>Date Transacted</th>
                                                             </thead>
                                                             <tbody>
-                                                                <td>
-                                                                    {{ $payment->monthly_paid }}
-                                                                </td>
-                                                                <td>
-                                                                    {{ $payment->created_at }}
-                                                                </td>
+                                                                @foreach ($payments as $payment)
+                                                                    <tr>
+                                                                        <td>{{ $payment->invoices }}</td>
+                                                                        <td>{{ $payment->monthly_paid }}</td>
+                                                                        <td>{{ $payment->created_at }}</td>
+                                                                    </tr>
+                                                                @endforeach
                                                             </tbody>
                                                         </table>
                                                     </div>
