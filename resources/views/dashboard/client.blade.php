@@ -1,3 +1,7 @@
+@php
+    use App\Models\Payment;
+@endphp
+
 @extends('layout.main')
 
 @section('content')
@@ -96,19 +100,31 @@
                                                             <a href="#" class="btn btn-outline-danger">Delete</a>
                                                         </div> --}}
                                                         <table class="table">
-                                                            {{ $payments->links() }}
                                                             <thead>
                                                                 <th>Invoices</th>
                                                                 <th>Monthly Paid</th>
                                                                 <th>Date Transacted</th>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach ($payments as $payment)
-                                                                    <tr>
-                                                                        <td>{{ $payment->invoices }}</td>
-                                                                        <td>{{ $payment->monthly_paid }}</td>
-                                                                        <td>{{ $payment->created_at }}</td>
-                                                                    </tr>
+                                                                @php
+                                                                    $clientHouseIds[] = $paymentInfo->client_house_id;
+                                                                @endphp
+                                                                @foreach ($clientHouseIds as $clientHouseId)
+                                                                    @if ($clientHouseId == $paymentInfo->client_house_id)
+                                                                        @php
+                                                                            $payments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
+                                                                            ->select('invoices', DB::raw('FORMAT(monthly_paid, 2) as monthly_paid'), 'payments.created_at')
+                                                                            ->where('payments.client_house_id', $clientHouseId)
+                                                                            ->get();
+                                                                        @endphp
+                                                                        @foreach ($payments as $payment)
+                                                                            <tr>
+                                                                                <td>{{ $payment->invoices }}</td>
+                                                                                <td>{{ $payment->monthly_paid }}</td>
+                                                                                <td>{{ $payment->created_at }}</td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    @endif
                                                                 @endforeach
                                                             </tbody>
                                                         </table>

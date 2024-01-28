@@ -30,20 +30,10 @@ class DashboardController extends Controller
             ->join('categories', 'categories.category_id', '=', 'houses.category_id')
             ->join('payment_methods', 'payment_methods.payment_method_id', '=', 'payments.payment_method_id')
             ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
-            ->select('client_houses.client_house_id', 'houses.house_no', 'categories.category', DB::raw('FORMAT(houses.price, 2) as price'),
+            ->select('payments.client_house_id', 'houses.house_no', 'categories.category', DB::raw('FORMAT(houses.price, 2) as price'),
                 DB::raw('FORMAT(downpayments.downpayment, 2) as downpayment'))
             ->where('users.user_id', auth()->user()->user_id)
             ->get();
-
-            $clientHouseIds = [];
-
-            foreach ($paymentInfos as $paymentInfo) {
-                $clientHouseIds[] = $paymentInfo->client_house_id;
-            }
-
-        $payments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
-            ->select('invoices', DB::raw('FORMAT(monthly_paid, 2) as monthly_paid'), 'payments.created_at')
-            ->where('client_houses.client_house_id', $clientHouseIds);
 
         $totalMonthlyPaid = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
             ->join('users', 'users.user_id', '=', 'client_houses.user_id')
@@ -67,9 +57,7 @@ class DashboardController extends Controller
 
         $totalPaymentMade = number_format($totalPaymentMade, 2, '.', ',');
 
-        $payments = $payments->simplePaginate(2);
-
         // dd($clientHouseIds);
-        return view('dashboard.client', compact('paymentInfos', 'payments', 'totalPaymentMade'));
+        return view('dashboard.client', compact('paymentInfos', 'totalPaymentMade'));
     }
 }
