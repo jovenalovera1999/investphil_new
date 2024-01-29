@@ -64,11 +64,7 @@ class DashboardController extends Controller
             ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
             ->where('payments.client_house_id', $house->client_house_id)
             ->sum('monthly_paid');
-
-        $totalPaymentMade = doubleval($downpayment) + doubleval($totalPaymentMade);
-
-        $totalPaymentMade = number_format($totalPaymentMade, 2, '.', ',');
             
-        return view('monthly_payment.index', compact('house', 'monthlyPayments', 'downpayment', 'totalPaymentMade'));
+        return view('monthly_payment.index', compact('house', 'monthlyPayments', 'downpayment'));
     }
 }
