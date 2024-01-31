@@ -24,6 +24,8 @@ class DashboardController extends Controller
     }
 
     public function indexClient() {
+        $userId = auth()->user()->user_id;
+
         $payments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
             ->join('users', 'users.user_id', '=', 'client_houses.user_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
@@ -32,7 +34,8 @@ class DashboardController extends Controller
             ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
             ->select('users.user_id', 'houses.house_id', 'payments.client_house_id', 'houses.house_no', 'categories.category',
                 DB::raw('FORMAT(houses.price, 2) as price'), DB::raw('FORMAT(downpayments.downpayment, 2) as downpayment'))
-            ->where('users.user_id', auth()->user()->user_id)
+            ->distinct()
+            ->where('client_houses.user_id', $userId)
             ->orderBy('price', 'desc');
 
         $payments = $payments->simplePaginate(8);
@@ -55,16 +58,24 @@ class DashboardController extends Controller
         $downpayment = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
-            ->select(DB::raw('FORMAT(price, 2) as price'), DB::raw('FORMAT(downpayment, 2) as downpayment'))
+            ->select('downpayments.downpayment as downpayment_value', DB::raw('FORMAT(price, 2) as price'),
+                DB::raw('FORMAT(downpayment, 2) as downpayment'))
             ->where('payments.client_house_id', $house->client_house_id)
             ->get();
 
-        $totalPaymentMade = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
+        $totalMonthlyPaidMade = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
             ->where('payments.client_house_id', $house->client_house_id)
             ->sum('monthly_paid');
+
+        $downpaymentValue = doubleval($downpayment->first()->downpayment_value);
+        $totalMonthlyPaidMadeValue = doubleval($totalMonthlyPaidMade);
+
+        // dd($totalMonthlyPaidMade);
+        $totalPaymentMade = $downpaymentValue + $totalMonthlyPaidMadeValue;
+        $totalPaymentMade = number_format($totalPaymentMade, 2, '.', ',');
             
-        return view('monthly_payment.index', compact('house', 'monthlyPayments', 'downpayment'));
+        return view('monthly_payment.index', compact('house', 'monthlyPayments', 'downpayment', 'totalPaymentMade'));
     }
 }

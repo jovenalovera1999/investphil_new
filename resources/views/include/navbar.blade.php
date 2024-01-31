@@ -20,7 +20,7 @@
                 House Module</a>
             <a href="/clients" class="nav-item nav-tenants"><span class='icon-field'><i
                         class="fa fa-user-friends "></i></span> Client Module</a>
-            <a href="#" class="nav-item nav-invoices"><span class='icon-field'><i
+            <a href="/payments" class="nav-item nav-invoices"><span class='icon-field'><i
                         class="fa fa-file-invoice "></i></span> Payment Module</a>
             <a href="#" class="nav-item nav-reports"><span class='icon-field'><i
                         class="fa fa-list-alt "></i></span> Report Module</a>

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -18,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('client_house_id');
             $table->unsignedBigInteger('downpayment_id');
             $table->double('monthly_paid')->default(0);
-            $table->tinyInteger('is_fully_paid')->default(0);
             $table->tinyInteger('is_deleted')->default(0);
             $table->timestamps();
 

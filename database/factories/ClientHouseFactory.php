@@ -17,8 +17,8 @@ class ClientHouseFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->numberBetween($min = 1, $max = 2),
-            'house_id' => fake()->numberBetween($min = 1, $max = 80)
+            'user_id' => fake()->numberBetween($min = 1, $max = 200),
+            'house_id' => fake()->numberBetween($min = 1, $max = 20)
         ];
     }
 }

@@ -19,7 +19,7 @@ class PaymentFactory extends Factory
         return [
             'payment_method_id' => fake()->numberBetween($min = 1, $max = 2),
             'invoices' => fake()->randomNumber(8),
-            'client_house_id' => fake()->numberBetween($min = 1, $max = 200),
+            'client_house_id' => fake()->numberBetween($min = 1, $max = 300),
             'downpayment_id' => fake()->numberBetween($min = 1, $max = 3),
             'monthly_paid' => fake()->randomNumber(5)
         ];

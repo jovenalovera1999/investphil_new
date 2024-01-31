@@ -98,10 +98,10 @@ class DatabaseSeeder extends Seeder
             'downpayment' => 50000
         ]);
 
-        \App\Models\User::factory(10)->create();
-        \App\Models\House::factory(80)->create();
-        \App\Models\ClientHouse::factory(200)->create();
-        \App\Models\Payment::factory(20)->create();
+        \App\Models\User::factory(200)->create();
+        \App\Models\House::factory(20)->create();
+        \App\Models\ClientHouse::factory(300)->create();
+        \App\Models\Payment::factory(400)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

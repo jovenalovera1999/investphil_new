@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,5 +59,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/store_category', 'store');
 
         Route::put('/update_category/{category}', 'update');
+    });
+
+    Route::controller(PaymentController::class)->group(function() {
+        Route::get('/payments', 'index');
+        Route::get('/payment/client/{id}', 'view');
     });
 });
