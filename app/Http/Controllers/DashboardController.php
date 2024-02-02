@@ -12,12 +12,12 @@ use App\Models\ClientHouse;
 class DashboardController extends Controller
 {
     public function indexAdmin() {
-        $totalHouse = House::where('is_deleted', 0)
+        $totalHouse = House::where('is_deleted', false)
             ->count();
 
         $totalUser = User::join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
-            ->where('role', 'Admin')
-            ->where('is_delete', 0)
+            ->where('role', 'Client')
+            ->where('is_delete', false)
             ->count();
 
         return view('dashboard.admin', compact('totalHouse', 'totalUser'));
@@ -74,7 +74,7 @@ class DashboardController extends Controller
         // dd($totalMonthlyPaidMade);
         $totalPaymentMade = $downpaymentValue + $totalMonthlyPaidMadeValue;
         $totalPaymentMade = number_format($totalPaymentMade, 2, '.', ',');
-            
+        
         return view('monthly_payment.index', compact('house', 'monthlyPayments', 'downpayment', 'totalPaymentMade'));
     }
 }

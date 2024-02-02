@@ -13,7 +13,7 @@ class UserController extends Controller
         $clients = User::join('genders', 'genders.gender_id', '=', 'users.gender_id')
             ->join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
             ->where('role', 'Client')
-            ->where('is_delete', 0)
+            ->where('is_delete', false)
             ->orderBy('first_name', 'asc');
 
         if(request()->has('search')) {
@@ -25,7 +25,7 @@ class UserController extends Controller
                         ->orWhere('middle_name', 'like', "%$searchTerm%")
                         ->orWhere('last_name', 'like', "%$searchTerm%")
                         ->where('role', 'Client')
-                        ->where('is_delete', 0)
+                        ->where('is_delete', false)
                         ->orderBy('first_name', 'asc');
 
                         session(['searchTermClient' => $searchTerm]);

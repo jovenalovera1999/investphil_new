@@ -15,7 +15,7 @@ class HouseController extends Controller
 
         $houses = House::join('categories', 'categories.category_id', '=', 'houses.category_id')
             ->select('houses.*', 'categories.category', DB::raw('FORMAT(houses.price, 2) as price'))
-            ->where('houses.is_deleted', 0)
+            ->where('houses.is_deleted', false)
             ->orderBy('price', 'asc');
 
         if(request()->has('search')) {
@@ -27,7 +27,7 @@ class HouseController extends Controller
                         ->orWhere('category', 'like', "%$searchTerm%")
                         ->orWhere('description', 'like', "%$searchTerm%")
                         ->orWhere('price', 'like', "%$searchTerm%")
-                        ->where('houses.is_deleted', 0)
+                        ->where('houses.is_deleted', false)
                         ->orderBy('price', 'asc');
                         
                         session(['searchTermHouse' => $searchTerm]);
