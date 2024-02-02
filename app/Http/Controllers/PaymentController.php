@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\ClientHouse;
+use App\Models\Payment;
 
 class PaymentController extends Controller
 {
@@ -13,6 +15,8 @@ class PaymentController extends Controller
             ->join('client_houses', 'client_houses.user_id', '=', 'users.user_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->join('categories', 'categories.category_id', '=', 'houses.category_id')
+            ->select('client_houses.client_house_id', 'users.first_name', 'users.middle_name', 'users.last_name',
+                'houses.house_no', 'categories.category')
             ->where('user_roles.role', 'Client')
             ->where('client_houses.is_deleted', 0)
             ->orderBy('users.first_name', 'asc');
@@ -39,15 +43,20 @@ class PaymentController extends Controller
                 }
             }
 
-        $clients = $clients->simplePaginate(3);
+        $clients = $clients->simplePaginate(6);
 
         return view('payment.index', compact('clients'));
     }
 
     public function view($id) {
-        $client = User::join('genders', 'genders.gender_id', '=', 'users.gender_id')
+        $client = ClientHouse::join('users', 'users.user_id', '=', 'client_houses.user_id')
+            ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+            ->join('genders', 'genders.gender_id', '=', 'users.gender_id')
             ->find($id);
 
-        return view('payment.view', compact('client'));
+        $payments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
+            ->where('client_houses.client_house_id', $id);
+
+        return view('payment.view', compact('client', 'payments'));
     }
 }

@@ -86,13 +86,13 @@ use App\Models\Payment;
                         @endforeach
                     </tbody>
                 </table>
-                <strong class="mt-3">Total Assessment:</strong>
-                <p>{{ $downpayment->first()->price }}</p>
-                <strong class="mt-3">Downpayment:</strong>
-                <p>{{ $downpayment->first()->downpayment }}</p>
-                <strong class="mt-3">Total Payment Made:</strong>
-                <p>{{ $totalPaymentMade }}</p>
             </div>
+            <strong class="mt-3">Total Assessment:</strong>
+            <p>{{ $downpayment->first()->price }}</p>
+            <strong class="mt-3">Downpayment:</strong>
+            <p>{{ $downpayment->first()->downpayment }}</p>
+            <strong class="mt-3">Total Payment Made:</strong>
+            <p>{{ $totalPaymentMade }}</p>
         </div>
     </div>
 </div>

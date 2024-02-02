@@ -46,11 +46,9 @@
                                 <form action="/payments" method="get">
                                     <label for="search">Search</label>
                                     <input type="text" class="form-control" id="search" name="search" value="" />
-                                    <button class="btn btn-primary mt-2 mb-2">Search</button>
                                 </form>
                             </div>
                             <div class="mt-1 me-1 float-end">
-                                {{-- {{ $clients->appends(['search' => session('searchTermClient', '')])->links() }} --}}
                             </div>
                             <thead>
                                 <tr>
@@ -61,30 +59,19 @@
                                     <th class="text-center">Gender</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Contact Number</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($clients as $client)
-                                <tr>
-                                    <td>{{ $client->first_name }}</td>
-                                    <td>{{ $client->middle_name }}</td>
-                                    <td>{{ $client->last_name }}</td>
-                                    <td>{{ $client->age }}</td>
-                                    <td>{{ $client->gender }}</td>
-                                    <td>{{ $client->email }}</td>
-                                    <td>{{ $client->contact_number }}</td>
-                                    <td>
-                                        @if ($client->is)
-                    
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">View Payment Transactions</a>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                {{-- @foreach ($clients as $client)
+                                    <tr>
+                                        <td>{{ $client->first_name }}</td>
+                                        <td>{{ $client->middle_name }}</td>
+                                        <td>{{ $client->last_name }}</td>
+                                        <td>{{ $client->age }}</td>
+                                        <td>{{ $client->gender }}</td>
+                                        <td>{{ $client->email }}</td>
+                                    </tr>
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>

@@ -40,8 +40,6 @@
                                     <th class="text-center">First Name</th>
                                     <th class="text-center">Middle Name</th>
                                     <th class="text-center">Last Name</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Contact Number</th>
                                     <th class="text-center">House Number</th>
                                     <th class="text-center">House Model</th>
                                     <th class="text-center">Status</th>
@@ -54,17 +52,15 @@
                                     <td>{{ $client->first_name }}</td>
                                     <td>{{ $client->middle_name }}</td>
                                     <td>{{ $client->last_name }}</td>
-                                    <td>{{ $client->email }}</td>
-                                    <td>{{ $client->contact_number }}</td>
                                     <td>{{ $client->house_no }}</td>
                                     <td>{{ $client->category }}</td>
                                     @if ($client->is_full_paid == 0)
-                                        <td style="background-color: red; color:white;">Not Fully Paid</td>
+                                        <td class="status"><span class="waiting">Not Fully Paid</span></td>
                                     @else
-                                        <td style="background-color: green; color:white;">Fully Paid</td>
+                                        <td class="status"><span class="active">Fully Paid</span></td>
                                     @endif
                                     <td>
-                                        <a href="#" class="btn btn-outline-primary">View Payment Transactions</a>
+                                        <a href="/payment/client/monthly_payment/{{ $client->client_house_id }}" class="btn btn-outline-primary">View Payment Transactions</a>
                                     </td>
                                 </tr>
                                 @endforeach

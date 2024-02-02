@@ -1,0 +1,33 @@
+td.status span {
+    position: relative;
+    border-radius: 30px;
+    padding: 4px 10px 4px 25px;
+}
+
+td.status span:after {
+    position: absolute;
+    top: 9px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+    content: '';
+    border-radius: 50%;
+}
+
+td.status .active {
+    background: #cff6dd;
+    color: #1fa750;
+}
+
+td.status .active:after {
+    background: #23bd5a;
+}
+
+.table tbody td.status .waiting {
+    background: #fdf5dd;
+    color: #cfa00c;
+}
+
+.table tbody td.status .waiting:after {
+    background: #f2be1d;
+}

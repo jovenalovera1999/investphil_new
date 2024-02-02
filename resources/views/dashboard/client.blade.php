@@ -85,7 +85,7 @@
                                 <td>{{ $payment->category }}</td>
                                 <td>{{ $payment->price }}</td>
                                 <td>{{ $payment->downpayment }}</td>
-                                <td><a href="/dashboard/client/monthly_payment/{{ $payment->house_id }}" class="btn btn-outline-primary">View Monthly Paid</a></td>
+                                <td><a href="/dashboard/client/monthly_payment/{{ $payment->client_house_id }}" class="btn btn-outline-primary">View Monthly Paid</a></td>
                             </tr>
                         @endforeach
                     </tbody>
