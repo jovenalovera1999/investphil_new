@@ -60,7 +60,8 @@
                                         <td class="status"><span class="active">Fully Paid</span></td>
                                     @endif
                                     <td>
-                                        <a href="/payment/client/monthly_payment/{{ $client->client_house_id }}" class="btn btn-outline-primary">View Payment Transactions</a>
+                                        <a href="/payment/view/monthly_payment/{{ $client->client_house_id }}"
+                                            class="btn btn-outline-primary">View Monthly Payment</a>
                                     </td>
                                 </tr>
                                 @endforeach

@@ -15,10 +15,16 @@ class PaymentController extends Controller
             ->join('client_houses', 'client_houses.user_id', '=', 'users.user_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->join('categories', 'categories.category_id', '=', 'houses.category_id')
-            ->select('client_houses.client_house_id', 'users.first_name', 'users.middle_name', 'users.last_name',
-                'houses.house_no', 'categories.category')
+            ->select(
+                'client_houses.client_house_id',
+                'users.first_name',
+                'users.middle_name',
+                'users.last_name',
+                'houses.house_no',
+                'categories.category'
+            )
             ->where('user_roles.role', 'Client')
-            ->where('client_houses.is_deleted', 0)
+            ->where('client_houses.is_deleted', false)
             ->orderBy('users.first_name', 'asc');
 
             if(request()->has('search')) {

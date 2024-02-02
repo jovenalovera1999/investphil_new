@@ -26,21 +26,41 @@ class DashboardController extends Controller
     public function indexClient() {
         $userId = auth()->user()->user_id;
 
-        $payments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
-            ->join('users', 'users.user_id', '=', 'client_houses.user_id')
+        $houses = User::join('genders', 'genders.gender_id', '=', 'users.gender_id')
+            ->join('user_roles', 'user_roles.user_role_id', '=', 'users.user_role_id')
+            ->join('client_houses', 'client_houses.user_id', '=', 'users.user_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->join('categories', 'categories.category_id', '=', 'houses.category_id')
-            ->join('payment_methods', 'payment_methods.payment_method_id', '=', 'payments.payment_method_id')
-            ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
-            ->select('client_houses.client_house_id', 'houses.house_no', 'categories.category',
-                DB::raw('FORMAT(houses.price, 2) as price'), DB::raw('FORMAT(downpayments.downpayment, 2) as downpayment'))
-            ->where('client_houses.user_id', $userId)
-            ->orderBy('price', 'desc');
+            ->select(
+                'client_houses.client_house_id',
+                'houses.house_no',
+                'categories.category',
+                DB::raw('FORMAT(houses.price, 2) as price')
+            )
+            ->where('users.user_id', $userId)
+            ->where('client_houses.is_deleted', false)
+            ->orderBy('categories.category', 'asc');
 
-        $payments = $payments->simplePaginate(8);
+        // $payments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
+        //     ->join('users', 'users.user_id', '=', 'client_houses.user_id')
+        //     ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+        //     ->join('categories', 'categories.category_id', '=', 'houses.category_id')
+        //     ->join('payment_methods', 'payment_methods.payment_method_id', '=', 'payments.payment_method_id')
+        //     ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
+        //     ->select(
+        //         'client_houses.client_house_id',
+        //         'houses.house_no',
+        //         'categories.category',
+        //         DB::raw('FORMAT(houses.price, 2) as price'),
+        //         DB::raw('FORMAT(downpayments.downpayment, 2) as downpayment')
+        //     )
+        //     ->where('client_houses.user_id', $userId)
+        //     ->where('client_houses.is_deleted', false)
+        //     ->orderBy('price', 'desc');
 
-        // dd($clientHouseIds);
-        return view('dashboard.client', compact('payments'));
+        $houses = $houses->simplePaginate(8);
+
+        return view('dashboard.client', compact('houses'));
     }
 
     public function viewMonthlyPayment($id) {

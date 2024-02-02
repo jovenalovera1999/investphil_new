@@ -69,23 +69,21 @@
             <div class="table-responsive">
                 <table class="table">
                     <div class="float-end mt-1 me-1">
-                        {{ $payments->links() }}
+                        {{ $houses->links() }}
                     </div>
                     <thead>
                         <th class="text-center">House No.</th>
                         <th class="text-center">House Model</th>
                         <th class="text-center">Total Assessment</th>
-                        <th class="text-center">Downpayment</th>
                         <th class="text-center">Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($payments as $payment)
+                        @foreach ($houses as $house)
                             <tr>
-                                <td>{{ $payment->house_no }}</td>
-                                <td>{{ $payment->category }}</td>
-                                <td>{{ $payment->price }}</td>
-                                <td>{{ $payment->downpayment }}</td>
-                                <td><a href="/dashboard/client/monthly_payment/{{ $payment->client_house_id }}" class="btn btn-outline-primary">View Monthly Paid</a></td>
+                                <td>{{ $house->house_no }}</td>
+                                <td>{{ $house->category }}</td>
+                                <td>{{ $house->price }}</td>
+                                <td><a href="/dashboard/view/monthly_payment/{{ $house->client_house_id }}" class="btn btn-outline-primary">View Monthly Paid</a></td>
                             </tr>
                         @endforeach
                     </tbody>
