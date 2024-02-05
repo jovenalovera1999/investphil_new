@@ -36,7 +36,7 @@
                             @error('age') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="user_role">Gender</label>
+                            <label for="gender_id">Gender</label>
                             <select class="form-select" aria-label="role" id="gender_id" name="gender_id">
                                 <option value="" selected>Select gender</option>
                                 @foreach ($genders as $gender)
@@ -79,6 +79,40 @@
                             <label for="password_confirmation">Confirm Password</label>
                             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" />
                             @error('password_confirmation') <p class="text-danger fs-6">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="house_id">House</label>
+                            <select class="form-select mb-3" aria-label="role" id="house_id" name="house_id">
+                                <option value="" selected>Select house</option>
+                                @foreach ($houses as $house)
+                                    <option value="{{ $house->house_id }}">{{'House No: ' . $house->house_no . ', House Type: ' . $house->category }}</option>
+                                @endforeach
+                            </select>
+                            <p id="house_validation" class="text-danger fs-6"></p>
+                        </div>
+                        <div class="mb-1">
+                            <label for="downpayment">Downpayment</label>
+                            <input type="text" class="form-control" id="downpayment" name="downpayment" />
+                            <p id="downpayment_validation" class="text-danger fs-6"></p>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="addHouseToOwned()">Add House</button>
+                    </div>
+                    <div class="col">
+                        <label for="house_to_owned">House to Owned</label>
+                        <div class="table-resonsive" id="house_to_owned">
+                            <table class="table" id="table_house_to_owned">
+                                <thead>
+                                    <th>House No. and Model</th>
+                                    <th>Downpayment</th>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

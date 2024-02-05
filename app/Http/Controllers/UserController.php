@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Gender;
+use App\Models\House;
+use App\Models\ClientHouse;
 
 class UserController extends Controller
 {
@@ -42,7 +44,13 @@ class UserController extends Controller
 
     public function createClient() {
         $genders = Gender::all();
-        return view('client.create', compact('genders'));
+
+        $houses = House::join('categories', 'categories.category_id', '=', 'houses.category_id')
+            ->orderBy('categories.category', 'asc')
+            ->orderBy('houses.house_no', 'asc')
+            ->get();
+
+        return view('client.create', compact('genders', 'houses'));
     }
 
     public function storeClient(Request $request) {
@@ -65,7 +73,19 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $validated['user_role_id'] = 3;
 
-        User::create($validated);
+        $user = User::create($validated);
+        $userId = $user->user_id;
+
+        $houses = $request->input('houses') ?? [];
+
+        if(!empty($houses)) {
+            foreach($houses as $house) {
+                ClientHouse::create([
+                    'user_id' => $userId,
+                    'house_id' => $house['house_id']
+                ]);
+            }
+        }
 
         return redirect('/clients')->with('message_success', 'Client successfully added!');
     }
@@ -134,18 +154,22 @@ class UserController extends Controller
             session(['gender' => $user->gender, 'role' => $user->role]);
             $request->session()->regenerate();
 
-            if(session('role') == 'Admin') {
-                if(empty(auth()->user()->middle_name)) {
-                    return redirect('/dashboard/admin')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->last_name);
-                } else {
-                    return redirect('/dashboard/admin')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->middle_name[0] . '. ' . auth()->user()->last_name);
-                }
+            $firstName = auth()->user()->first_name;
+            $middleName = auth()->user()->middle_name;
+            $lastName = auth()->user()->last_name;
+
+            $fullName = '';
+
+            if(empty($middleName)) {
+                $fullName = $firstName . ' ' . $lastName;
             } else {
-                if(empty(auth()->user()->middle_name)) {
-                    return redirect('/dashboard/client')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->last_name);
-                } else {
-                    return redirect('/dashboard/client')->with('message_success_login', 'Logged in as ' . auth()->user()->first_name . ' ' . auth()->user()->middle_name[0] . '. ' . auth()->user()->last_name);
-                }
+                $fullName = $firstName . ' ' . $middleName[0] . '. ' . $lastName;
+            }
+
+            if(session('role') == 'Admin') {
+                return redirect('/dashboard/admin')->with('message_success_login', 'Logged in as ' . $fullName);
+            } else {
+                return redirect('/dashboard/client')->with('message_success_login', 'Logged in as ' . $fullName);
             }
         } else {
             return back()->with('message_failed', 'Incorrect username or password.');
