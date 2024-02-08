@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('payment_id');
             $table->unsignedBigInteger('payment_method_id');
-            $table->string('invoices', 55);
+            $table->string('invoices', 55)->nullable();
             $table->unsignedBigInteger('client_house_id');
             $table->unsignedBigInteger('downpayment_id');
             $table->double('monthly_paid')->default(0);

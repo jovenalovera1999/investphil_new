@@ -85,36 +85,10 @@ class UserController extends Controller
 
         if(!empty($houses)) {
             foreach($houses as $house) {
-                $clientHouse = ClientHouse::create([
+                ClientHouse::create([
                     'user_id' => $userId,
                     'house_id' => $house['house_id']
                 ]);
-
-                $clientHouseId = $clientHouse->client_house_id;
-
-                $downpaymentId = Downpayment::select('downpayment_id')
-                    ->where('downpayment', $house['downpayment'])
-                    ->first();
-
-                if($downpaymentId) {
-                    Payment::create([
-                        'invoices' => null,
-                        'client_house_id' => $clientHouseId,
-                        'downpayment_id' => $downpaymentId
-                    ]);
-                } else {
-                    $downpayment = Downpayment::create([
-                        'downpayment' => $house['downpayment']
-                    ]);
-
-                    $downpaymentId = $downpayment->downpayment_id;
-
-                    Payment::create([
-                        'invoices' => null,
-                        'client_house_id' => $clientHouseId,
-                        'downpayment_id' => $downpaymentId
-                    ]);
-                }
             }
         }
 

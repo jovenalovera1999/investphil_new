@@ -69,7 +69,6 @@ use App\Models\Payment;
             <div class="table-responsive">
                 <table class="table">
                     <div class="float-end mt-1 me-1">
-                        {{-- {{ $payments->links() }} --}}
                     </div>
                     <thead>
                         <th class="text-center">Invoices</th>
@@ -88,9 +87,13 @@ use App\Models\Payment;
                 </table>
             </div>
             <strong class="mt-3">Total Assessment:</strong>
-            <p>{{ $downpayment->first()->price }}</p>
+            <p>{{ $house->price }}</p>
             <strong class="mt-3">Downpayment:</strong>
-            <p>{{ $downpayment->first()->downpayment }}</p>
+            @if(empty($downpayment->first()->downpayment))
+                <p>0.00</p>
+            @else
+                <p>{{ $downpayment->first()->downpayment }}</p>
+            @endif
             <strong class="mt-3">Total Payment Made:</strong>
             <p>{{ $totalPaymentMade }}</p>
         </div>

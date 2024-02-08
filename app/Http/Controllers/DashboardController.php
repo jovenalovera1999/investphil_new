@@ -48,8 +48,12 @@ class DashboardController extends Controller
 
     public function viewMonthlyPayment($id) {
         $house = ClientHouse::join('houses', 'houses.house_id', '=', 'client_houses.house_id')
-            ->join('payments', 'payments.client_house_id', '=', 'client_houses.client_house_id')
             ->find($id);
+
+        if($house->price) {
+            $housePrice = doubleval($house->price);
+            $house->price = number_format($housePrice, 2, '.', ',');
+        }
 
         $monthlyPayments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
@@ -71,8 +75,21 @@ class DashboardController extends Controller
             ->where('payments.client_house_id', $id)
             ->sum('monthly_paid');
 
-        $downpaymentValue = doubleval($downpayment->first()->downpayment_value);
-        $totalMonthlyPaidMadeValue = doubleval($totalMonthlyPaidMade);
+        $downpaymentValue = '';
+
+        if(empty($downpayment->first()->downpayment_value)) {
+            $downpaymentValue = 0;
+        } else {
+            $downpaymentValue = doubleval($downpayment->first()->downpayment_value);
+        }
+
+        $totalMonthlyPaidMadeValue = '';
+
+        if(empty($totalMonthlyPaidMade)) {
+            $totalMonthlyPaidMadeValue = 0;
+        } else {
+            $totalMonthlyPaidMadeValue = doubleval($totalMonthlyPaidMade);
+        }
 
         $totalPaymentMade = $downpaymentValue + $totalMonthlyPaidMadeValue;
         $totalPaymentMade = number_format($totalPaymentMade, 2, '.', ',');

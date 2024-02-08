@@ -93,28 +93,14 @@
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="payment_method_id">Payment Method</label>
-                                    <select class="form-select" aria-label="role" id="payment_method_id" name="payment_method_id">
-                                        <option value="" selected>Select payment method</option>
-                                        @foreach ($paymentMethods as $paymentMethod)
-                                            <option value="{{ $paymentMethod->payment_method_id }}">{{ $paymentMethod->payment_method }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <p id="payment_method_validation" class="text-danger fs-6"></p>
                                     <label for="house_id">House</label>
                                     <select class="form-select" aria-label="role" id="house_id" name="house_id">
                                         <option value="" selected>Select house</option>
                                         @foreach ($houses as $house)
-                                            <option value="{{ $house->house_id }}">{{'House No: ' . $house->house_no . ', House Type: ' . $house->category }}</option>
+                                            <option value="{{ $house->house_id }}">{{ 'House No: ' . $house->house_no . ', House Type: ' . $house->category }}</option>
                                         @endforeach
                                     </select>
                                     <p id="house_validation" class="text-danger fs-6"></p>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="downpayment">Downpayment</label>
-                                    <input type="text" class="form-control" id="downpayment" name="downpayment" />
-                                    <p id="downpayment_validation" class="text-danger fs-6"></p>
                                 </div>
                                 <button type="button" class="btn btn-primary" onclick="addHouseToOwned()">Add House</button>
                             </div>
@@ -122,9 +108,7 @@
                                 <div class="table-resonsive" id="house_to_owned">
                                     <table class="table" id="table_house_to_owned">
                                         <thead>
-                                            <th>Payment Method</th>
                                             <th>House No. and Model</th>
-                                            <th>Downpayment</th>
                                         </thead>
                                         <tbody>
                                             
