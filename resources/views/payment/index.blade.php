@@ -14,12 +14,7 @@
         <div class="col-sm-10">
             <div class="card mt-3">
                 <div class="card-header">
-                    <b>List of Clients</b>
-                    <span>
-                        <a class="btn btn-primary btn-block btn-sm col-sm-2 float-end" href="/client/create" id="new_client">
-                            <i class="fa fa-plus"></i> New Payment Transaction
-                        </a>
-                    </span>
+                    <strong>List of Clients</strong>
                 </div>
                 <div class="card-body">
                     @include('include.messages')
@@ -49,19 +44,22 @@
                             <tbody>
                                 @foreach ($clients as $client)
                                 <tr>
-                                    <td>{{ $client->first_name }}</td>
-                                    <td>{{ $client->middle_name }}</td>
-                                    <td>{{ $client->last_name }}</td>
-                                    <td>{{ $client->house_no }}</td>
-                                    <td>{{ $client->category }}</td>
+                                    <td style="width: 14%">{{ $client->first_name }}</td>
+                                    <td style="width: 14%">{{ $client->middle_name }}</td>
+                                    <td style="width: 14%">{{ $client->last_name }}</td>
+                                    <td style="width: 14%">{{ $client->house_no }}</td>
+                                    <td style="width: 14%">{{ $client->category }}</td>
                                     @if ($client->is_full_paid == 0)
-                                        <td class="status"><span class="waiting">Not Fully Paid</span></td>
+                                        <td class="status" style="width: 14%"><span class="waiting">Not Fully Paid</span></td>
                                     @else
-                                        <td class="status"><span class="active">Fully Paid</span></td>
+                                        <td class="status" style="width: 14%"><span class="active">Fully Paid</span></td>
                                     @endif
-                                    <td>
-                                        <a href="/payment/view/monthly_payment/{{ $client->client_house_id }}"
-                                            class="btn btn-outline-primary">View Monthly Payment</a>
+                                    <td style="width: 14%">
+                                        <div class="btn-group" role="group">
+                                            <a href="/payment/view/monthly_payment/{{ $client->client_house_id }}"
+                                                class="btn btn-outline-primary">View Monthly Payment</a>
+                                            <a href="/payment/create/client_house/{{ $client->client_house_id }}" class="btn btn-outline-primary">Add New Transaction</a>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

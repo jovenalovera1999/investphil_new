@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::controller(PaymentController::class)->group(function() {
         Route::get('/payments', 'index');
+        Route::get('/payment/create/client_house/{id}', 'create');
         Route::get('/payment/view/monthly_payment/{id}', 'view');
     });
 });

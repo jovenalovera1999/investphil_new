@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\ClientHouse;
+use App\Models\Downpayment;
 use App\Models\Payment;
+use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -49,7 +52,7 @@ class PaymentController extends Controller
                 }
             }
 
-        $clients = $clients->simplePaginate(6);
+        $clients = $clients->simplePaginate(4);
 
         return view('payment.index', compact('clients'));
     }
@@ -60,9 +63,74 @@ class PaymentController extends Controller
             ->join('genders', 'genders.gender_id', '=', 'users.gender_id')
             ->find($id);
 
-        $payments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
-            ->where('client_houses.client_house_id', $id);
+        $monthlyPayments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
+        ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+        ->select('payments.invoices', DB::raw('FORMAT(payments.monthly_paid, 2) as monthly_paid'), 'payments.created_at')
+        ->where('payments.client_house_id', $id)
+        ->get();
 
-        return view('payment.view', compact('client', 'payments'));
+        $downpayment = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
+        ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+        ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
+        ->select(
+            'downpayments.downpayment as downpayment_value',
+            DB::raw('FORMAT(price, 2) as price'),
+            DB::raw('FORMAT(downpayment, 2) as downpayment')
+        )
+        ->where('payments.client_house_id', $id)
+        ->get();
+
+        $totalMonthlyPaidMade = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
+        ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+        ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
+        ->where('payments.client_house_id', $id)
+        ->sum('monthly_paid');
+
+        if ($client->price) {
+            $housePrice = doubleval($client->price);
+            $client->price = number_format($housePrice, 2, '.', ',');
+        }
+
+        $downpaymentValue = '';
+
+        if (empty($downpayment->first()->downpayment_value)) {
+            $downpaymentValue = 0;
+        } else {
+            $downpaymentValue = doubleval($downpayment->first()->downpayment_value);
+        }
+
+        $totalMonthlyPaidMadeValue = '';
+
+        if (empty($totalMonthlyPaidMade)) {
+            $totalMonthlyPaidMadeValue = 0;
+        } else {
+            $totalMonthlyPaidMadeValue = doubleval($totalMonthlyPaidMade);
+        }
+
+        $totalPaymentMade = $downpaymentValue + $totalMonthlyPaidMadeValue;
+        $totalPaymentMade = number_format($totalPaymentMade, 2, '.', ',');
+
+        return view('payment.view', compact('client', 'monthlyPayments', 'downpayment', 'totalPaymentMade'));
+    }
+
+    public function create($id) {
+        $paymentMethods = PaymentMethod::all();
+
+        $clientHouse = ClientHouse::join('users', 'users.user_id', '=', 'client_houses.user_id')
+            ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+            ->join('categories', 'categories.category_id', '=', 'houses.category_id')
+            ->find($id);
+
+        $downpayment = Downpayment::join('payments', 'payments.downpayment_id', '=', 'downpayments.downpayment_id')
+            ->select('downpayments.downpayment')
+            ->where('payments.client_house_id', $clientHouse->client_house_id)
+            ->first();
+
+        $clientHouse->price = number_format(doubleval($clientHouse->price), 2, '.', ',');
+
+        $downpaymentAmount = $downpayment->downpayment ?? 0;
+        $downpayment = number_format(doubleval($downpaymentAmount), 2, '.', ',');
+
+        return view('payment.create', compact('paymentMethods', 'clientHouse', 'downpayment'));
     }
 }

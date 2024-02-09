@@ -1,6 +1,59 @@
+@php
+use App\Models\Payment;
+@endphp
+
 @extends('layout.main')
 
 @section('content')
+
+<title>PHILINVEST | Client Dashboard</title>
+
+<style>
+    span.float-right.summary_icon {
+        font-size: 3rem;
+        position: absolute;
+        right: 1rem;
+        top: 0;
+    }
+
+    .imgs {
+        margin: .5em;
+        max-width: calc(100%);
+        max-height: calc(100%);
+    }
+
+    .imgs img {
+        max-width: calc(100%);
+        max-height: calc(100%);
+        cursor: pointer;
+    }
+
+    #imagesCarousel,
+    #imagesCarousel .carousel-inner,
+    #imagesCarousel .carousel-item {
+        height: 60vh !important;
+        background: black;
+    }
+
+    #imagesCarousel .carousel-item.active {
+        display: flex !important;
+    }
+
+    #imagesCarousel .carousel-item-next {
+        display: flex !important;
+    }
+
+    #imagesCarousel .carousel-item img {
+        margin: auto;
+    }
+
+    #imagesCarousel img {
+        width: auto !important;
+        height: auto !important;
+        max-height: calc(100%) !important;
+        max-width: calc(100%) !important;
+    }
+</style>
 
 @include('include.topbar')
 
@@ -11,72 +64,38 @@
         <div class="col-sm-2">
             @include('include.navbar')
         </div>
-        <div class="col-sm-10">
-            <div class="card mt-3">
-                <div class="card-header">
-                    <strong>Client Information</strong>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <strong>Full Name:</strong>
-                            <p>{{$client->first_name}} {{$client->last_name}}</p>
-                            <strong>Age:</strong>
-                            <p>{{ $client->age }}</p>
-                            <strong>Gender:</strong>
-                            <p>{{ $client->gender }}</p>
-                        </div>
-                        <div class="col">
-                            <strong>Email:</strong>
-                            <p>{{ $client->email }}</p>
-                            <strong>Contact Number:</strong>
-                            <p>{{ $client->contact_number }}</p>
-                        </div>
+        <div class="col-sm-7">
+            <h2 class="mt-5">Monthly Payment Made</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <div class="float-end mt-1 me-1">
                     </div>
-                </div>
+                    <thead>
+                        <th class="text-center">Invoices</th>
+                        <th class="text-center">Monthly Paid</th>
+                        <th class="text-center">Date Transacted</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($monthlyPayments as $monthlyPayment)
+                            <tr>
+                                <td>{{ $monthlyPayment->invoices }}</td>
+                                <td>{{ $monthlyPayment->monthly_paid }}</td>
+                                <td>{{ $monthlyPayment->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-            <div class="card mt-3">
-                <div class="card-header">
-                    <strong>{{ $client->last_name . "'s " }} House Owned</strong>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-condensed table-bordered table-hover">
-                            <div class="ms-1 me-1">
-                                <form action="/payments" method="get">
-                                    <label for="search">Search</label>
-                                    <input type="text" class="form-control" id="search" name="search" value="" />
-                                </form>
-                            </div>
-                            <div class="mt-1 me-1 float-end">
-                            </div>
-                            <thead>
-                                <tr>
-                                    <th class="text-center">First Name</th>
-                                    <th class="text-center">Middle Name</th>
-                                    <th class="text-center">Last Name</th>
-                                    <th class="text-center">Age</th>
-                                    <th class="text-center">Gender</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Contact Number</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- @foreach ($clients as $client)
-                                    <tr>
-                                        <td>{{ $client->first_name }}</td>
-                                        <td>{{ $client->middle_name }}</td>
-                                        <td>{{ $client->last_name }}</td>
-                                        <td>{{ $client->age }}</td>
-                                        <td>{{ $client->gender }}</td>
-                                        <td>{{ $client->email }}</td>
-                                    </tr>
-                                @endforeach --}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <strong class="mt-3">Total Assessment:</strong>
+                <p>{{ $client->price }}</p>
+                <strong class="mt-3">Downpayment:</strong>
+            @if(empty($downpayment->first()->downpayment))
+                <p>0.00</p>
+            @else
+                <p>{{ $downpayment->first()->downpayment }}</p>
+            @endif
+                <strong class="mt-3">Total Payment Made:</strong>
+                <p>{{ $totalPaymentMade }}</p>
         </div>
     </div>
 </div>

@@ -50,11 +50,6 @@ class DashboardController extends Controller
         $house = ClientHouse::join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->find($id);
 
-        if($house->price) {
-            $housePrice = doubleval($house->price);
-            $house->price = number_format($housePrice, 2, '.', ',');
-        }
-
         $monthlyPayments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->select('payments.invoices', DB::raw('FORMAT(payments.monthly_paid, 2) as monthly_paid'), 'payments.created_at')
@@ -74,6 +69,11 @@ class DashboardController extends Controller
             ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
             ->where('payments.client_house_id', $id)
             ->sum('monthly_paid');
+
+        if ($house->price) {
+            $housePrice = doubleval($house->price);
+            $house->price = number_format($housePrice, 2, '.', ',');
+        }
 
         $downpaymentValue = '';
 
