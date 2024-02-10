@@ -15,7 +15,8 @@
             <div class="card mt-5">
                 <div class="card-body">
                     <h5 class="card-title mb-4">Payment Transaction</h5>
-                    <form action="#" method="post">
+                    <form action="/store_payment/{{ $clientHouse->client_house_id }}" method="post">
+                        @csrf
                         <p><strong>Client Name:</strong> {{ (!empty($clientHouse->middle_name)) ? $clientHouse->last_name . ', ' . 
                             $clientHouse->first_name . ' ' . $clientHouse->middle_name[0] . '.' : $clientHouse->last_name . 
                             ', ' . $clientHouse->first_name }}</p>
@@ -23,13 +24,13 @@
                         <p><strong>House Model:</strong> {{ $clientHouse->category }}</p>
                         <p><strong>House Price:</strong> {{ $clientHouse->price }}</p>
                         <p><strong>Downpayment:</strong> {{ $downpayment }}</p>
+                        <input type="hidden" name="already_have_downpayment" value="{{ $downpayment }}">
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="mb-3">
                                     <label for="invoices">Invoices</label>
                                     <input type="text" class="form-control" id="invoices" name="invoices"
                                         value="{{ old('invoices', mt_rand(10000000, 99999999)) }}" readonly />
-                                    @error('invoices') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                                 </div>
                             </div>
                             <div class="col-sm-4">

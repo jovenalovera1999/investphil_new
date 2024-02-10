@@ -124,7 +124,7 @@
                                     <div class="card-body text-white">
                                         <span class="float-right summary_icon"> <i class="fa fa-file-invoice "></i></span>
                                         <h4>
-                                            <b>0</b>
+                                            <b>{{ $totalPaymentByMonth }}</b>
                                         </h4>
                                         <p>
                                             <b>Payments This Month</b>
@@ -134,7 +134,7 @@
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <a href="#" class="text-primary float-right">View Payments <span
+                                            <a href="/payments" class="text-primary float-right">View Payments <span
                                                     class="fa fa-angle-right"></span></a>
                                         </div>
                                     </div>

@@ -40,7 +40,7 @@ class UserController extends Controller
             }
         }
 
-        $clients = $clients->simplePaginate(5);
+        $clients = $clients->paginate(5);
 
         return view('client.index', compact('clients'));
     }

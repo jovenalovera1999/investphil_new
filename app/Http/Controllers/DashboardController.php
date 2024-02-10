@@ -8,6 +8,7 @@ use App\Models\House;
 use App\Models\User;
 use App\Models\Payment;
 use App\Models\ClientHouse;
+use DateTime;
 
 class DashboardController extends Controller
 {
@@ -20,7 +21,13 @@ class DashboardController extends Controller
             ->where('is_delete', false)
             ->count();
 
-        return view('dashboard.admin', compact('totalHouse', 'totalUser'));
+        $currentDate = now();
+
+        $totalPaymentByMonth = Payment::whereYear('created_at', '=', $currentDate->format('Y'))
+            ->whereMonth('created_at', '=', $currentDate->format('m'))
+            ->count();
+
+        return view('dashboard.admin', compact('totalHouse', 'totalUser', 'totalPaymentByMonth'));
     }
 
     public function indexClient() {
@@ -41,7 +48,7 @@ class DashboardController extends Controller
             ->where('client_houses.is_deleted', false)
             ->orderBy('categories.category', 'asc');
 
-        $houses = $houses->simplePaginate(8);
+        $houses = $houses->paginate(8);
 
         return view('dashboard.client', compact('houses'));
     }

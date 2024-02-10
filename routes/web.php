@@ -65,5 +65,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/payments', 'index');
         Route::get('/payment/create/client_house/{id}', 'create');
         Route::get('/payment/view/monthly_payment/{id}', 'view');
+
+        Route::post('/store_payment/{id}', 'store');
     });
 });

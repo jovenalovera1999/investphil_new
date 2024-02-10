@@ -52,7 +52,7 @@ class PaymentController extends Controller
                 }
             }
 
-        $clients = $clients->simplePaginate(4);
+        $clients = $clients->paginate(4);
 
         return view('payment.index', compact('clients'));
     }
@@ -132,5 +132,76 @@ class PaymentController extends Controller
         $downpayment = number_format(doubleval($downpaymentAmount), 2, '.', ',');
 
         return view('payment.create', compact('paymentMethods', 'clientHouse', 'downpayment'));
+    }
+
+    public function store(Request $request, $id) {
+        $validated = $request->validate([
+            'already_have_downpayment' => ['nullable'],
+            'invoices' => ['required', 'numeric'],
+            'payment_method_id' => ['required', 'exists:payment_methods,payment_method_id'],
+            'amount_to_pay' => ['required', 'numeric']
+        ], [
+            'payment_method_id.required' => 'The payment method field is required.',
+            'payment_method_id.exists' => 'The payment method is invalid.'
+        ]);
+
+        if($request->is_downpayment) {
+            $downpayment = Downpayment::where('downpayment', $validated['amount_to_pay'])->first();
+
+            if(!empty($downpayment)) {
+                Payment::create([
+                    'payment_method_id' => $validated['payment_method_id'],
+                    'invoices' => $validated['invoices'],
+                    'client_house_id' => $id,
+                    'downpayment_id' => $downpayment->downpayment_id,
+                    'monthly_paid' => 0
+                ]);
+            } else {
+                $downpayment = Downpayment::create([
+                    'downpayment' => $validated['amount_to_pay']
+                ]);
+
+                Payment::create([
+                    'payment_method_id' => $validated['payment_method_id'],
+                    'invoices' => $validated['invoices'],
+                    'client_house_id' => $id,
+                    'downpayment_id' => $downpayment->downpayment_id,
+                    'monthly_paid' => 0
+                ]);
+            }
+
+            return back()->with('message_success', 'Downpayment successfully saved!');
+        } else {
+            $stringWithoutComma = str_replace(',', '', $validated['already_have_downpayment']);
+            $stringWithDot = str_replace('.', '', $stringWithoutComma);
+            $validated['already_have_downpayment'] = substr_replace($stringWithDot, '.', -2, 0);
+            
+            $downpayment = Downpayment::where('downpayment', doubleval($validated['already_have_downpayment']))->first();
+
+            if (!empty($downpayment)) {
+                Payment::create([
+                    'payment_method_id' => $validated['payment_method_id'],
+                    'invoices' => $validated['invoices'],
+                    'client_house_id' => $id,
+                    'downpayment_id' => $downpayment->downpayment_id,
+                    'monthly_paid' => $validated['amount_to_pay']
+                ]);
+            } else {
+                $downpayment = Downpayment::create([
+                    'downpayment' => doubleval($validated['already_have_downpayment'])
+                ]);
+
+                Payment::create([
+                    'payment_method_id' => $validated['payment_method_id'],
+                    'invoices' => $validated['invoices'],
+                    'client_house_id' => $id,
+                    'downpayment_id' => $downpayment->downpayment_id,
+                    'monthly_paid' => $validated['amount_to_pay']
+                ]);
+            }
+
+            return back()->with('message_success', 'Payment successfully saved!');
+        }
+
     }
 }

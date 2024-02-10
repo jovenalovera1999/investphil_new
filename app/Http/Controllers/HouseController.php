@@ -37,7 +37,7 @@ class HouseController extends Controller
             }
         }
 
-        $houses = $houses->simplePaginate(2);
+        $houses = $houses->paginate(2);
 
         return view('house.index', compact('houses', 'categories'));
     }
