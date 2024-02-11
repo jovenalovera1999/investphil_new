@@ -79,7 +79,11 @@ use App\Models\Payment;
                         @foreach ($monthlyPayments as $monthlyPayment)
                             <tr>
                                 <td>{{ $monthlyPayment->invoices }}</td>
-                                <td>{{ $monthlyPayment->monthly_paid }}</td>
+                                @if (doubleval($monthlyPayment->monthly_paid) == 0)
+                                    <td><strong><i>Downpayment</i></strong></td>
+                                @else
+                                    <td>{{ $monthlyPayment->monthly_paid }}</td>
+                                @endif
                                 <td>{{ $monthlyPayment->created_at }}</td>
                             </tr>
                         @endforeach

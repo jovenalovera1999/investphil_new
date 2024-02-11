@@ -42,7 +42,7 @@ class PaymentController extends Controller
                             ->orWhere('users.contact_number', 'like', "%$searchTerm%")
                             ->orWhere('houses.house_no', 'like', "%$searchTerm%")
                             ->orWhere('categories.category', 'like', "%$searchTerm%")
-                            ->where('client_houses.is_deleted', 0)
+                            ->where('client_houses.is_deleted', false)
                             ->orderBy('users.first_name', 'asc');
 
                             session(['searchTermClientPayment' => $searchTerm]);
@@ -64,27 +64,31 @@ class PaymentController extends Controller
             ->find($id);
 
         $monthlyPayments = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
-        ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
-        ->select('payments.invoices', DB::raw('FORMAT(payments.monthly_paid, 2) as monthly_paid'), 'payments.created_at')
-        ->where('payments.client_house_id', $id)
-        ->get();
+            ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+            ->select(
+                'payments.invoices',
+                DB::raw('FORMAT(payments.monthly_paid, 2) as monthly_paid'),
+                'payments.created_at'
+                )
+            ->where('payments.client_house_id', $id)
+            ->get();
 
         $downpayment = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
-        ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
-        ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
-        ->select(
-            'downpayments.downpayment as downpayment_value',
-            DB::raw('FORMAT(price, 2) as price'),
-            DB::raw('FORMAT(downpayment, 2) as downpayment')
-        )
-        ->where('payments.client_house_id', $id)
-        ->get();
+            ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+            ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
+            ->select(
+                'downpayments.downpayment as downpayment_value',
+                DB::raw('FORMAT(price, 2) as price'),
+                DB::raw('FORMAT(downpayment, 2) as downpayment')
+            )
+            ->where('payments.client_house_id', $id)
+            ->get();
 
         $totalMonthlyPaidMade = Payment::join('client_houses', 'client_houses.client_house_id', '=', 'payments.client_house_id')
-        ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
-        ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
-        ->where('payments.client_house_id', $id)
-        ->sum('monthly_paid');
+            ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+            ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
+            ->where('payments.client_house_id', $id)
+            ->sum('monthly_paid');
 
         if ($client->price) {
             $housePrice = doubleval($client->price);
@@ -186,6 +190,45 @@ class PaymentController extends Controller
                     'downpayment_id' => $downpayment->downpayment_id,
                     'monthly_paid' => $validated['amount_to_pay']
                 ]);
+
+                $downpayment = Downpayment::create([
+                    'downpayment' => doubleval($validated['already_have_downpayment'])
+                ]);
+
+                Payment::create([
+                    'payment_method_id' => $validated['payment_method_id'],
+                    'invoices' => $validated['invoices'],
+                    'client_house_id' => $id,
+                    'downpayment_id' => $downpayment->downpayment_id,
+                    'monthly_paid' => $validated['amount_to_pay']
+                ]);
+
+                $housePrice = ClientHouse::join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+                    ->where('client_houses.client_house_id', $id)
+                    ->get();
+
+                $downpayment = ClientHouse::join('payments', 'payments.client_house_id', '=', 'client_houses.client_house_id')
+                    ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
+                    ->where('client_houses.client_house_id', $id)
+                    ->first();
+
+                $monthlyPaid = Payment::where('client_house_id', $id)
+                    ->sum('monthly_paid');
+
+                $totalPaymentMade = '';
+
+                if (!empty($downpayment)) {
+                    $totalPaymentMade = doubleval($downpayment) + doubleval($monthlyPaid);
+                } else {
+                    $totalPaymentMade = doubleval($monthlyPaid);
+                }
+
+                if ($totalPaymentMade >= doubleval($housePrice)) {
+                    $clientHouse = ClientHouse::find($id);
+                    $clientHouse->update([
+                        'is_full_paid' => true
+                    ]);
+                }
             } else {
                 $downpayment = Downpayment::create([
                     'downpayment' => doubleval($validated['already_have_downpayment'])
@@ -198,6 +241,34 @@ class PaymentController extends Controller
                     'downpayment_id' => $downpayment->downpayment_id,
                     'monthly_paid' => $validated['amount_to_pay']
                 ]);
+
+                $housePrice = ClientHouse::join('houses', 'houses.house_id', '=', 'client_houses.house_id')
+                    ->where('client_houses.client_house_id', $id)
+                    ->get();
+
+                $downpayment = ClientHouse::join('payments', 'payments.client_house_id', '=', 'client_houses.client_house_id')
+                    ->join('downpayments', 'downpayments.downpayment_id', '=', 'payments.downpayment_id')
+                    ->where('client_houses.client_house_id', $id)
+                    ->get();
+
+                $monthlyPaid = Payment::sum('monthly_paid')
+                    ->where('client_house_id', $id)
+                    ->get();
+
+                $totalPaymentMade = '';
+
+                if (!empty($downpayment)) {
+                    $totalPaymentMade = doubleval($downpayment) + doubleval($monthlyPaid);
+                } else {
+                    $totalPaymentMade = doubleval($monthlyPaid);
+                }
+
+                if ($totalPaymentMade >= doubleval($housePrice)) {
+                    $clientHouse = ClientHouse::find($id);
+                    $clientHouse->update([
+                        'is_full_paid' => true
+                    ]);
+                }
             }
 
             return back()->with('message_success', 'Payment successfully saved!');

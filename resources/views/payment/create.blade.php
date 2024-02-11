@@ -62,7 +62,8 @@
                                     @error('amount_to_pay') <p class="text-danger fs-6">{{ $message }}</p> @enderror
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="is_downpayment" id="is_downpayment">
+                                    <input type="checkbox" class="form-check-input" name="is_downpayment" id="is_downpayment" 
+                                        value="1" {{ old('is_downpayment') ? 'checked' : '' }}>
                                     <label for="is_downpayment" class="form-check-label">Downpayment?</label>
                                 </div>
                             </div>
