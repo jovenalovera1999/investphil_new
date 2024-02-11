@@ -49,7 +49,7 @@
                                     <td style="width: 14%">{{ $client->last_name }}</td>
                                     <td style="width: 14%">{{ $client->house_no }}</td>
                                     <td style="width: 14%">{{ $client->category }}</td>
-                                    @if ($client->is_full_paid == 0)
+                                    @if ($client->is_full_paid == false)
                                         <td class="status" style="width: 14%"><span class="waiting">Not Fully Paid</span></td>
                                     @else
                                         <td class="status" style="width: 14%"><span class="active">Fully Paid</span></td>

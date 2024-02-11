@@ -14,6 +14,7 @@ class ClientHouse extends Model
     protected $fillable = [
         'user_id',
         'house_id',
-        'is_deleted'
+        'is_deleted',
+        'is_full_paid'
     ];
 }
