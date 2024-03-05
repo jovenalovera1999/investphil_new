@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClientHouse;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -125,6 +126,9 @@ class PrintController extends Controller
         $totalPaymentMade = $downpaymentValue + $totalMonthlyPaidMadeValue;
         $totalPaymentMade = number_format($totalPaymentMade, 2, '.', ',');
 
-        return view('print.payment', compact('client', 'monthlyPayments', 'downpayment', 'totalPaymentMade'));
+        $currentDate = Carbon::now();
+        $currentDate = $currentDate->format('m/d/Y');
+
+        return view('print.payment', compact('client', 'monthlyPayments', 'downpayment', 'totalPaymentMade', 'currentDate'));
     }
 }

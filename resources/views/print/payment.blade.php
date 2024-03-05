@@ -9,7 +9,7 @@
 
     <!-- Title and sub title -->
     <h2 class="mt-3 text-center">PAYMENT REPORT</h2>
-    <p class="text-center">As of <u><strong>03/05/2024</strong></u></p>
+    <p class="text-center">As of <u><strong>{{ $currentDate }}</strong></u></p>
     <div class="row mt-3">
         <!-- Client Information -->
         <div class="col">
