@@ -45,11 +45,7 @@ class PaymentController extends Controller
                             ->orWhere('categories.category', 'like', "%$searchTerm%")
                             ->where('client_houses.is_deleted', false)
                             ->orderBy('users.first_name', 'asc');
-
-                            session(['searchTermClientPayment' => $searchTerm]);
                     });
-                } else {
-                    session()->forget('searchTermClientPayment');
                 }
             }
 
@@ -58,7 +54,7 @@ class PaymentController extends Controller
         return view('payment.index', compact('clients'));
     }
 
-    public function view($id) {
+    public function show($id) {
         $client = ClientHouse::join('users', 'users.user_id', '=', 'client_houses.user_id')
             ->join('houses', 'houses.house_id', '=', 'client_houses.house_id')
             ->join('genders', 'genders.gender_id', '=', 'users.gender_id')

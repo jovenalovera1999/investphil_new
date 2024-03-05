@@ -29,11 +29,7 @@ class HouseController extends Controller
                         ->orWhere('price', 'like', "%$searchTerm%")
                         ->where('houses.is_deleted', false)
                         ->orderBy('price', 'asc');
-                        
-                        session(['searchTermHouse' => $searchTerm]);
                 });
-            } else {
-                session()->forget('searchTermHouse');
             }
         }
 

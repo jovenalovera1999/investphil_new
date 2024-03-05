@@ -26,15 +26,14 @@
                     @include('include.messages')
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-hover">
-                            <div class="ms-1 me-1">
+                            <div class="ms-1 me-1 col-sm-3">
                                 <form action="/clients" method="get">
                                     <label for="search">Search</label>
-                                    <input type="text" class="form-control" id="search" name="search" value="{{ session('searchTermClient', '') }}" />
-                                    <button class="btn btn-primary mt-2 mb-2">Search</button>
+                                    <input type="text" class="form-control" id="search" name="search" />
                                 </form>
                             </div>
-                            <div class="mt-1 me-1 float-end">
-                                {{ $clients->appends(['search' => session('searchTermClient', '')])->links() }}
+                            <div class="mt-1 me-1">
+                                {{ $clients->links() }}
                             </div>
                             <thead>
                                 <tr>

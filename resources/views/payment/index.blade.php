@@ -20,15 +20,15 @@
                     @include('include.messages')
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-hover">
-                            <div class="ms-1 me-1">
+                            <div class="ms-1 me-1 col-sm-3">
                                 <form action="/payments" method="get">
                                     <label for="search">Search</label>
                                     <input type="text" class="form-control" id="search" name="search"
                                         value="{{ session('searchTermClientPayment', '') }}" />
                                 </form>
                             </div>
-                            <div class="mt-1 me-1 float-end">
-                                {{ $clients->appends(['search' => session('searchTermClientPayment', '')])->links() }}
+                            <div class="mt-1 me-1">
+                                {{ $clients->links() }}
                             </div>
                             <thead>
                                 <tr>
@@ -56,7 +56,7 @@
                                     @endif
                                     <td style="width: 14%">
                                         <div class="btn-group" role="group">
-                                            <a href="/payment/view/monthly_payment/{{ $client->client_house_id }}"
+                                            <a href="/payment/show/monthly_payment/{{ $client->client_house_id }}"
                                                 class="btn btn-outline-primary">View Monthly Payment</a>
                                             <a href="/payment/create/client_house/{{ $client->client_house_id }}" class="btn btn-outline-primary">Add New Transaction</a>
                                         </div>

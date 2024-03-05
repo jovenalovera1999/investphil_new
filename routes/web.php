@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PrintController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,8 +66,17 @@ Route::group(['middleware' => 'auth'], function() {
     Route::controller(PaymentController::class)->group(function() {
         Route::get('/payments', 'index');
         Route::get('/payment/create/client_house/{id}', 'create');
-        Route::get('/payment/view/monthly_payment/{id}', 'view');
+        Route::get('/payment/show/monthly_payment/{id}', 'show');
 
         Route::post('/store_payment/{id}', 'store');
+    });
+
+    Route::controller(ReportController::class)->group(function() {
+        Route::get('/report/payments', 'indexPaymentReport');
+        Route::get('/report/payment/show/{id}', 'showPaymentReport');
+    });
+
+    Route::controller(PrintController::class)->group(function() {
+        Route::get('/report/payment/print/{id}', 'printPaymentReport');
     });
 });

@@ -12,27 +12,22 @@
                 alt="Logo">
         </div>
         @if (session('role') == 'Admin')
-            <a href="/dashboard/admin" class="nav-item nav-home"><span class='icon-field'><i
-                        class="fa fa-tachometer-alt"></i></span> Dashboard</a>
-            <a href="/categories" class="nav-item nav-categories"><span class='icon-field'><i
-                        class="fa fa-th-list "></i></span> House Type</a>
-            <a href="/houses" class="nav-item nav-houses"><span class='icon-field'><i class="fa fa-home "></i></span>
-                House Module</a>
-            <a href="/clients" class="nav-item nav-tenants"><span class='icon-field'><i
-                        class="fa fa-user-friends "></i></span> Client Module</a>
-            <a href="/payments" class="nav-item nav-invoices"><span class='icon-field'><i
-                        class="fa fa-file-invoice "></i></span> Payment Module</a>
-            <a href="#" class="nav-item nav-reports"><span class='icon-field'><i
-                        class="fa fa-list-alt "></i></span> Report Module</a>
-            <a href="#" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users "></i></span>
-                Set up Module</a>
-            <a href="#" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-bell "></i></span> Notification
+            <a href="/dashboard/admin" class="nav-item nav-home"><span class='icon-field'><i class="fa fa-tachometer-alt"></i></span> Dashboard</a>
+            <a href="/clients" class="nav-item nav-tenants"><span class='icon-field'><i class="fa fa-user-friends "></i></span>Client Module</a>
+            <a href="/categories" class="nav-item nav-categories"><span class='icon-field'><i class="fa fa-th-list "></i></span> House Type</a>
+            <a href="/houses" class="nav-item nav-houses"><span class='icon-field'><i class="fa fa-home "></i></span>House Module</a>
+            <a href="/payments" class="nav-item nav-invoices"><span class='icon-field'><i class="fa fa-file-invoice "></i></span> Payment Module</a>
+            <a href="/report/payments" class="nav-item nav-reports"><span class='icon-field'><i class="fa fa-list-alt "></i></span>Report
                 Module</a>
+            <a href="#" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users "></i></span>Set up Module</a>
+            <a href="#" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-bell "></i></span>Notification
+                Module</a>
+        @elseif (session('role') == 'Cashier')
+            <a href="/clients" class="nav-item nav-tenants"><span class='icon-field'><i class="fa fa-user-friends "></i></span>Client Module</a>
+            <a href="/payments" class="nav-item nav-invoices"><span class='icon-field'><i class="fa fa-file-invoice "></i></span>Payment Module</a>
         @else
-            <a href="/dashboard/client" class="nav-item nav-home"><span class='icon-field'><i
-                        class="fa fa-tachometer-alt"></i></span> Dashboard</a>
-            <a href="#" class="nav-item nav-invoices"><span class='icon-field'><i class="fa fa-file-invoice"></i></span> Payment Module</a>
+            <a href="/dashboard/client" class="nav-item nav-home"><span class='icon-field'><i class="fa fa-tachometer-alt"></i></span>Dashboard</a>
+            <a href="#" class="nav-item nav-invoices"><span class='icon-field'><i class="fa fa-file-invoice"></i></span>Payment Module</a>
         @endif
     </div>
-
 </nav>

@@ -32,11 +32,7 @@ class UserController extends Controller
                         ->where('role', 'Client')
                         ->where('is_delete', false)
                         ->orderBy('first_name', 'asc');
-
-                        session(['searchTermClient' => $searchTerm]);
                 });
-            } else {
-                session()->forget('searchTermClient');
             }
         }
 
